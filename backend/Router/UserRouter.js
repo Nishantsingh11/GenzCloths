@@ -41,4 +41,31 @@ router.post("/register", async (req, res) => {
   }
 });
 
+
+// Making endpoint for login 
+router.post("/login", async (req,res)=>{
+
+try{
+    const {usernameoremail, password} = req.body;
+    if(!usernameoremail || !password){
+      return res.status(400).json({msg: "Please enter all fields"})
+    }
+  const user = await User.findOne({$or:[{username: usernameoremail},{email: usernameoremail}]})
+  if(!user){
+    res.status(400).json({msg: "Wrong credentials"})
+  }
+  const isPassword = bcrypt.compare(password,user.password)
+  if(!isPassword){
+    res.status(400).json({msg: "Wrong credentials"})
+  }
+  const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
+  res.json({token})
+}
+catch(err){
+  console.log("err",err);
+  res.status(400).json({msg: "Something went wrong"})
+}
+
+})
+
 module.exports = router;
