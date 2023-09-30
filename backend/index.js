@@ -5,12 +5,14 @@ const db = require("./Database/connecter")
 const UserRoutes = require("./Router/UserRouter")
 const jwt = require("jsonwebtoken")
 const Productrouter = require("./Router/ProductRouter")
+const AddToCartRouter = require("./Router/AddToCartRouter")
 // Middleware setup, if any
 
 
 // Use the userRoutes for handling user-related routes
 app.use('/user', UserRoutes); // This will prefix all routes in userRoutes with '/user'
 app.use('/product', Productrouter)
+app.use('/cart', AddToCartRouter)
 
 // Other route setups, if any
 
