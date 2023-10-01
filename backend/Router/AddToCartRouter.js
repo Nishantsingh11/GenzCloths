@@ -104,7 +104,7 @@ AddToCartRouter.post("/decreasequantity",authMiddleware, async (req,res)=>{
             Item.quantity -= 1
         }
         await SelectedItem.save()
-        res.status(200).json({message:"Quantity increased By 1"})
+        res.status(200).json({message:"Quantity Decrease By 1"})
     }
 }
 catch(err){
