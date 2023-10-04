@@ -3,14 +3,22 @@ import { categories } from './Category';
 
 const CategoryDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubOpen, setIsSubOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subcategoryVisibility, setSubcategoryVisibility] = useState({});
 
   const toggleMainDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const toggleSubDropdown = () => {
-    setIsSubOpen(!isSubOpen);
-  }
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category === selectedCategory ? null : category);
+
+    // Toggle the visibility of subcategories for the selected category
+    setSubcategoryVisibility((prevState) => ({
+      ...prevState,
+      [category.name]: !prevState[category.name],
+    }));
+  };
 
   return (
     <div className="relative inline-block text-left">
@@ -18,11 +26,14 @@ const CategoryDropdown = () => {
         onClick={toggleMainDropdown}
         className="outline-none focus:outline-none border px-3 py-1 bg-white rounded-sm flex items-center min-w-32"
       >
-        <span className="pr-1 font-semibold flex-1">Dropdown</span>
+        <span className="pr-1 font-semibold flex-1">
+          {selectedCategory ? selectedCategory.name : 'Dropdown'}
+        </span>
         <span>
           <svg
-            className={`fill-current h-4 w-4 transform transition duration-150 ease-in-out ${isOpen ? 'rotate-180' : ''
-              }`}
+            className={`fill-current h-4 w-4 transform transition duration-150 ease-in-out ${
+              isOpen ? 'rotate-180' : ''
+            }`}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
           >
@@ -36,28 +47,32 @@ const CategoryDropdown = () => {
         className={`bg-white border rounded-sm ${isOpen ? 'block' : 'hidden'
           } absolute transition duration-150 ease-in-out origin-top min-w-32 w-56`}
       >
-       {  categories.map((categories) =>{
-
-        return <li className="relative px-3 py-1 hover:bg-gray-100">
-          <button
-            onClick={toggleSubDropdown}
-            className="w-full text-left flex items-center outline-none focus:outline-none"
-          >
-            <span className="pr-1 flex-1">{categories.name  }</span>
-
-          </button>
-          <ul
-            className={`bg-white border rounded-sm absolute transition duration-150 ease-in-out origin-top-left min-w-54
-            w-56 text-center
-            ml-52 ${isSubOpen ? 'block' : 'hidden'
+        {categories.map((category) => (
+          <li className="relative px-3 py-1 hover:bg-gray-100" key={category.name}>
+            <button
+              onClick={() => handleCategoryClick(category)}
+              className="w-full text-left flex items-center outline-none focus:outline-none"
+            >
+              <span className="pr-1 flex-1">{category.name}</span>
+            </button>
+            <ul
+              className={`bg-white border rounded-sm absolute transition duration-150 ease-in-out origin-top-left min-w-54 w-56 text-center ml-52 ${
+                selectedCategory === category && subcategoryVisibility[category.name]
+                  ? 'block'
+                  : 'hidden'
               }`}
-          >
-            <li className="px-3 py-1 hover:bg-gray-100">{categories.subcategories}</li>
-          </ul>
-        </li>
-          })
-
-        }
+            >
+              {category.subcategories.map((subcategory) => (
+                <li
+                  key={subcategory}
+                  className="px-3 py-1 hover:bg-gray-100"
+                >
+                  {subcategory}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
       </ul>
     </div>
   );
