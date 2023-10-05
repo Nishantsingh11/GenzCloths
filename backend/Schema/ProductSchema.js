@@ -8,7 +8,11 @@ const ProductSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    productCategory:{
+    productMainCategory:{
+        type:String,
+        required:true
+    },
+    productSubCategory:{
         type:String,
         required:true
     },
