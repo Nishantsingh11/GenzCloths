@@ -16,7 +16,7 @@ const FormForSeller = () => {
     const getCategoryfromForm = (category) => {
         setSelectedMainCategory(category);
     }
-    
+
 
     // Function to get subcategories for the selected main category
     const findSubcategories = (categoryName) => {
@@ -24,13 +24,13 @@ const FormForSeller = () => {
         const storesubCategory = category ? category.subcategories : [];
         return storesubCategory
     };
-    
+
 
     // Example usage:
     //   const categoryName = "Men's Clothing";
     const subcategories = findSubcategories(selectedMainCategory);
     console.log(subcategories);
-    const handlesubformdata = (subcategorie) =>{
+    const handlesubformdata = (subcategorie) => {
         setSelectedSubCategory(subcategorie)
     }
 
@@ -114,25 +114,25 @@ const FormForSeller = () => {
                                                 <div className="relative">
                                                     <div className="h-10 bg-white text-center border border-gray-200 rounded items-center">
                                                         <p className="px-4 appearance-none outline-none text-gray-800 w-full">
-                                                            {selectedMainCategory ? selectedMainCategory :"Select Category" }
+                                                            {selectedMainCategory ? selectedMainCategory : "Select Category"}
                                                         </p>
 
-                                                        
+
                                                     </div>
                                                     <input type="checkbox" name="show_more" id="show_more" className="hidden peer" />
                                                     {isToggle &&
                                                         <>
-                                                           {categories.map((item, index) => {
-                                                                        return    <div className="cursor-pointer group">
-                                                                <div>
-                                                                 
-                                                                         <button
+                                                            {categories.map((item, index) => {
+                                                                return <div className="cursor-pointer group">
+                                                                    <div>
+
+                                                                        <button
                                                                             className="block p-2 border-transparent border-l-4 group-hover:border-blue-600 group-hover:bg-gray-100" key={index}
-                                                                             
+
                                                                             onClick={() => getCategoryfromForm(item.name)} >{item.name}  </button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                                    })}
+                                                            })}
                                                         </>
                                                     }
                                                 </div>
@@ -142,20 +142,20 @@ const FormForSeller = () => {
                                         <div className=" bg-gray-100">
                                             <div className="max-w-md mx-auto text-center" onClick={handleSubToggle} >
                                                 <label htmlFor="select" className="font-semibold block py-2">
-                                           
-                                                  Select Sub Category
-                                                    </label>
+
+                                                    Select Sub Category
+                                                </label>
                                                 <div className="relative">
-                                                    <div className="h-10 bg-white text-center  border border-gray-200 rounded items-center"> { 
-                                                    selectedSubCategory ? selectedSubCategory : "Select Sub Category" }
+                                                    <div className="h-10 bg-white text-center  border border-gray-200 rounded items-center"> {
+                                                        selectedSubCategory ? selectedSubCategory : "Select Sub Category"}
                                                         <input name="select" id="select" className="px-4 appearance-none outline-none text-gray-800 w-full" />
 
-                                                     
+
                                                     </div>
 
                                                     <input type="checkbox" name="show_more" id="show_more" className="hidden peer" />
                                                     {
-                                                        isSubToggle  &&
+                                                        isSubToggle &&
                                                         <div className="">
                                                             {subcategories.map((item, index) => {
                                                                 return <div className="cursor-pointer group tx" key={index}>
@@ -164,7 +164,7 @@ const FormForSeller = () => {
                                                                         className="block p-2 border-transparent 
                                                                     
                                                                     border-l-4 group-hover:border-blue-600 group-hover:bg-gray-100"
-                                                                    onClick={() => handlesubformdata(item)}
+                                                                        onClick={() => handlesubformdata(item)}
                                                                     >{item} </button>
                                                                 </div>
                                                             })}
@@ -175,56 +175,69 @@ const FormForSeller = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-full lg:w-4/12 px-4">
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
                                     <div className="relative w-full mb-3">
                                         <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                                            City
+                                            Product Color
                                         </label>
-                                        <input type="email" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                        <input type="email" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='Red,Blue,Green' />
                                     </div>
                                 </div>
-                                <div className="w-full lg:w-4/12 px-4">
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
                                     <div className="relative w-full mb-3">
                                         <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                                            Country
+                                            Product Brand
                                         </label>
-                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='H&M' />
                                     </div>
                                 </div>
-                                <div className="w-full lg:w-4/12 px-4">
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
                                     <div className="relative w-full mb-3">
                                         <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                                            Postal Code
-                                        </label>
-                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                            Product Materials                                        </label>
+                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='Cotten' />
                                     </div>
                                 </div>
-                            </div>
-
-                            <hr className="mt-6 border-b-1 border-blueGray-300" />
-
-                            <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                                About Me
-                            </h6>
-                            <div className="flex flex-wrap">
-                                <div className="w-full lg:w-12/12 px-4">
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
                                     <div className="relative w-full mb-3">
                                         <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                                            About me
+                                            productDiscount
                                         </label>
-                                        <textarea type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"></textarea>
+                                        <input type="email" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='5%' />
+                                    </div>
+                                </div>
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
+                                    <div className="relative w-full mb-3">
+                                        <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                                            Product Discount Price
+                                        </label>
+                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='95' />
+                                    </div>
+                                </div>
+                                <div className="w-full lg:w-4/12 px-4 mt-5">
+                                    <div className="relative w-full mb-3">
+                                        <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                                            Product Tags                                        </label>
+                                        <input type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='Skirt,woman,lady' />
                                     </div>
                                 </div>
                             </div>
                         </form>
+
                     </div>
+                </div>
+                <div className='text-center'>
+
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 mx-auto rounded-full" type='submit'>
+                    Submit
+                </button>
                 </div>
                 <footer className="relative  pt-8 pb-6 mt-2">
                     <div className="container mx-auto px-4">
                         <div className="flex flex-wrap items-center md:justify-between justify-center">
                             <div className="w-full md:w-6/12 px-4 mx-auto text-center">
                                 <div className="text-sm text-blueGray-500 font-semibold py-1">
-                                    Made with <a href="https://www.creative-tim.com/product/notus-js" className="text-blueGray-500 hover:text-gray-800" >Notus JS</a> by <a href="https://www.creative-tim.com" className="text-blueGray-500 hover:text-blueGray-800" > Creative Tim</a>.
+                                    Thank you for being with us
                                 </div>
                             </div>
                         </div>
@@ -233,8 +246,6 @@ const FormForSeller = () => {
             </div >
         </section >
         </>
-
-
     )
 }
 
