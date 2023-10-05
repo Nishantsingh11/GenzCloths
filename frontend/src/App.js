@@ -7,6 +7,7 @@ import Cart from './Components/Cart/Cart';
 import Registration from './Components/Registration/Registration';
 import NotFound from './Components/NotFound';
 import FormForSeller from './Components/ForSeller/FormForSeller';
+import ItemsForSeller from './Components/ForSeller/ItemsForSeller';
 function App() {
   return (
     <div className="container mx-auto">
@@ -20,6 +21,7 @@ function App() {
       <Route path = "/cart" element = {<Cart />} />
       <Route path = "/registration" element = {<Registration />} />
       <Route path = "/seller/additem" element = {<FormForSeller />} />
+      <Route path = "/seller/yourItem" element = {<ItemsForSeller />} />
       </Routes>     
      </BrowserRouter>
       </div>
