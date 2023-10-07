@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const router = require("./UserRouter");
 const Productrouter = express.Router();
 Productrouter.use(bodyParser.json());
+Productrouter.use(bodyParser.urlencoded({ extended: true }));
+const cors = require("cors");
+Productrouter.use(cors());
 
 // Create a Product
 Productrouter.post("/createproduct", (req, res) => {
@@ -12,7 +15,8 @@ Productrouter.post("/createproduct", (req, res) => {
     const {
       productName,
       productDescription,
-      productCategory,
+      productMainCategory,
+      productSubCategory,
       productPrice,
       productImage,
       productQuantity,
@@ -29,7 +33,8 @@ Productrouter.post("/createproduct", (req, res) => {
     if (
       !productName ||
       !productDescription ||
-      !productCategory ||
+      !productMainCategory ||
+      !productSubCategory ||
       !productPrice ||
       !productQuantity ||
       !productSize ||
@@ -38,11 +43,13 @@ Productrouter.post("/createproduct", (req, res) => {
       !productMaterials
     ) {
       return res.status(400).json({ msg: "Please enter all fields" });
+     
     }
     const data = ProductSchema({
       productName,
       productDescription,
-      productCategory,
+      productMainCategory,
+      productSubCategory,
       productPrice,
       productImage,
       productQuantity,
@@ -63,9 +70,11 @@ Productrouter.post("/createproduct", (req, res) => {
       })
       .catch((err) => {
         res.status(400).json({ msg: "something went wrong" });
+        console.log("err", err);
       });
   } catch (err) {
     res.status(400).json({ msg: "Not able to create product" });
+    console.log("err", err);
   }
 });
 

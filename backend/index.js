@@ -7,6 +7,7 @@
   const Productrouter = require("./Router/ProductRouter")
   const AddToCartRouter = require("./Router/AddToCartRouter")
   const OrderRouter = require("./Router/OrderRouter")
+  const cors = require("cors")
   // Middleware setup, if any
 
 
@@ -15,6 +16,8 @@
   app.use('/product', Productrouter)
   app.use('/cart', AddToCartRouter)
   app.use("/order", require("./Router/OrderRouter"))
+  app.use(cors())
+  
 
   // Other route setups, if any
 

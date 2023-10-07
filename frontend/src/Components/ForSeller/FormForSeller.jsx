@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
 import { categories } from '../Category/Category';
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const FormForSeller = () => {
+    const navigate = useNavigate();
     const [isToggle, setIsToggle] = useState(false)
     const [isSubToggle, setIsSubToggle] = useState(false)
     const [selectedMainCategory, setSelectedMainCategory] = useState(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
     const [basicData, setBasicData] = useState({
         productName: '',
+        productDescription: '',
+        productMainCategory: '',
+        productSubCategory: '',
         productPrice: '',
         productQuantity: '',
         productSize: '',
-        productDescription: '',
         productColor: '',
         productBrand: '',
         productMaterials: '',
         productDiscount: '',
         productDiscountPrice: '',
         productTags: '',
-        productMainCategory: '',
-        productSubCategory: '',
     })
 
 
@@ -39,9 +42,9 @@ const FormForSeller = () => {
         setIsSubToggle(!isSubToggle)
     }
     const getCategoryfromForm = (category) => {
-        // setBasicData({ ...basicData, productMainCategory: category })
-
         setSelectedMainCategory(category);
+        setBasicData({ ...basicData, productMainCategory: selectedMainCategory })
+
     }
 
 
@@ -58,11 +61,20 @@ const FormForSeller = () => {
 
 
     const handlesubformdata = (subcategorie) => {
-        // setBasicData({ ...basicData, productSubCategory: subcategorie })
         setSelectedSubCategory(subcategorie)
+        setBasicData({ ...basicData, productSubCategory: selectedSubCategory })
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
+
+
+       await axios.post("http://localhost:8080/product/createproduct", basicData)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
         console.log("hello");
         console.log(basicData);
         setBasicData({
@@ -82,6 +94,7 @@ const FormForSeller = () => {
         })
         setSelectedMainCategory(null);
         setSelectedSubCategory(null);
+        navigate("/seller/youritem")
     }
     return (
         <>
@@ -228,7 +241,7 @@ const FormForSeller = () => {
                                                                     
                                                                     border-l-4 group-hover:border-blue-600 group-hover:bg-gray-100"
                                                                             name="productSubCategory"
-                                                                            value={basicData.productSubCategory}
+                                                                            // value={basicData.productSubCategory}
                                                                             onClick={() => handlesubformdata(item)}
                                                                         >{item} </button>
                                                                     </div>
