@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     street: String,
     city: String,
     state: String,
-    postalCode: String,
+    pincode: String,
     country: String,
   },
   profileImage: String, // URL to the user's profile picture

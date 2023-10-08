@@ -69,56 +69,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// updaing the user like there first name, last name,address,phone number,etc
-// router.put("/updateprofile", authMiddleware, async (req, res) => {
-//   try {
-//     const {
-//       firstname,
-//       lastname,
-//       dateofbirth,
-//       gender,
-//       phonenumber,
-//       street,
-//       city,
-//       state,
-//       country,
-//       pincode,
-//     } = req.body;
-//     const id = req.user.id;
-//     const findUser = await User.findOne({ _id: id });
-//     if (!findUser) {
-//       return res.status(400).json({ msg: "User does not exist" });
-//     }
-//     const data = await User.findOneAndUpdate(
-//       { _id: id },
-//       {
-//         $set: {
-//           firstname: firstname,
-//           lastname: lastname,
-//           dateofbirth: dateofbirth,
-//           gender: gender,
-//           phonenumber: phonenumber,
-//           street: street,
-//           city: city,
-//           state: state,
-//           country: country,
-//           pincode: pincode,
-
-//         }, // update the user
-
-
-//       }
-//       { new: true } // Return the updated user data
-
-//     );
-//   } catch (err) {
-//     console.log("err", err);
-//     res.status(400).json({ msg: "Something went wrong" });
-//   }
-// });
-// Import necessary modules and User model at the top of your userRoutes.js file
-
-// ...
 
 // Update user profile route (protected)
 router.put("/updateprofile", authMiddleware, async (req, res) => {
@@ -179,7 +129,20 @@ router.put("/updateprofile", authMiddleware, async (req, res) => {
     res.status(500).json({ msg: "Something went wrong" });
   }
 });
-
+// get all the info using user id 
+router.get("/getuserdetails", authMiddleware, async (req, res) => {
+  try {
+    const id = req.user;
+    const findUser = await User.findOne({ _id: id });
+    if (!findUser) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    res.json({ findUser });
+  } catch (err) {
+    console.log("err", err);
+    res.status(400).json({ msg: "Something went wrong" });
+  }
+});
 
 
 
