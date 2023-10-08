@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CategoryDropdown from './Category/Dropdown'
 
 const Navbar = () => {
+  const [isLogin, setIsLogin] = useState(false)
+  const token = localStorage.getItem('token')
+  useEffect(() => {
+    if (token) {
+      setIsLogin(true)
+    }
+  }, [token])
+
+  const handleLogout = () =>{
+    localStorage.removeItem('token')
+    setIsLogin(false)
+  } 
   return (
     <>
       {/* // <!-- component --> */}
@@ -19,8 +31,8 @@ const Navbar = () => {
           {/* <!-- search --> */}
           <div className="w-full max-w-xs xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden xl:flex items-center">
             <CategoryDropdown />
-            
-            
+
+
             <input className="border-l border-gray-300 bg-transparent font-semibold text-sm pl-4" type="text" placeholder="I'm searching for ..." />
             <svg className="ml-auto h-5 px-4 text-gray-500" aria-hidden="true" focusable="false" data-prefix="far" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
             //   className="svg-inline--fa fa-search fa-w-16 fa-9x"
@@ -61,20 +73,26 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          {/* <!-- cart count --> */}
           <div className="ml-4 hidden sm:flex flex-col font-bold">
             <span className="text-xs text-gray-400">Your Cart</span>
             <span>$0</span>
           </div>
-          {/* <!-- phone number --> */}
           <div className="ml-auto md:w-48 hidden sm:flex flex-col place-items-end">
-          <Link to = "/registration ">
+            {isLogin ? (
 
-            <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-gray-700 text-lg font-bold text-white">
-              Sign in
-              <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
-            </button>
-          </Link>
+              <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-gray-700 text-lg font-bold text-white" onClick={handleLogout}>
+                Log out
+                <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+              </button>
+            ) : (
+              <Link to="/registration ">
+
+                <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-gray-700 text-lg font-bold text-white">
+                  Sign in
+                  <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                </button>
+              </Link>
+            )}
           </div>
         </div>
 

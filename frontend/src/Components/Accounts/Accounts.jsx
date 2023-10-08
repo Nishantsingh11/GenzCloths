@@ -1,79 +1,88 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import states from "./State"
+import countries from './Countries'
+import DatePicker from 'react-datepicker'
+import "/node_modules/react-datepicker/dist/react-datepicker.css"
+import axios from 'axios'
 const Accounts = () => {
+    const [isEditable, setIsEditable] = useState(true)
+    const [isStateOpen, setIsStateOpen] = useState(false)
+    const [isGenderOpen, setIsGenderOpen] = useState(false)
+    const [isCountryOpen, setIsCountryOpen] = useState(false)
+    const [date, setDate] = useState(new Date());
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        dateOfBirth: '',
+        gender: '',
+        phoneNumber: '',
+        street: '',
+        state: '',
+        country: '',
+        pincode: ''
 
+    })
+    const toggleEdit = () => {
+        setIsEditable(!isEditable)
+    }
+    const getFormData = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+    const handleStateOpen = () => {
+        setIsStateOpen(!isStateOpen)
+    }
+    const handleGenderOpen = () => {
+        setIsGenderOpen(!isGenderOpen)
+    }
+    const handleCountryOpen = () => {
+        setIsCountryOpen(!isCountryOpen)
+    }
+    const handleStateData = (state) => {
+        setFormData({ ...formData, state: state })
+        setIsStateOpen(!isStateOpen)
+
+    }
+    const handleCountryData = (country) => {
+        setFormData({ ...formData, country: country })
+        setIsCountryOpen(!isCountryOpen)
+    }
+    const handleGenderData = (gender) => {
+        setFormData({ ...formData, gender: gender })
+        setIsGenderOpen(!isGenderOpen)
+
+    }
+    const handleDateChange = (selectedDate) => {
+        const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+        setFormData({ ...formData, dateOfBirth: formattedDate });
+        setDate(selectedDate);
+    };
+
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const config = {
+        headers: {
+            'Authorization': `${localStorage.getItem("token")}`, // Include the token in the 'Authorization' header
+        },
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        await axios.put("http://localhost:8080/user/updateprofile", formData, config)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+    }
+    console.log(formData);
     return (
 
         <div>
-
-
-
-
             <div className="bg-gray-100">
-                <div className="w-full text-gray-700 bg-main-color">
-                    <div x-data="{ open: false }"
-                        className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
-                        <div className="p-4 flex flex-row items-center justify-between">
-                            <a href="@"
-                                className="text-lg font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">example
-                                profile</a>
-                            <button className="md:hidden rounded-lg focus:outline-none focus:shadow-outline" >
-                                {/* @click="open = !open" */}
-                                <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
-                                    <path x-show="!open" fillRule="evenodd"
-                                        d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                                        clipRule="evenodd"></path>
-                                    <path x-show="open" fillRule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clipRule="evenodd"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <nav
-                            //  :className="{'flex': open, 'hidden': !open}"
-                            className="flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
-                            <div
-                                //  @click.away="open = false" 
-                                className="relative" x-data="{ open: false }">
-                                <button
-                                    // @click="open = !open"
-                                    className="flex flex-row items-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent hover:bg-blue-800 md:w-auto md:inline md:mt-0 md:ml-4 ">
-                                    {/* hover:bg-gray-200 focus:bg-blue-800 focus:outline-none focus:shadow-outline */}
-                                    <span>Jane Doe</span>
-                                    <img className="inline h-6 rounded-full"
-                                        src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4" alt='some' />
-                                    <svg fill="currentColor" viewBox="0 0 20 20"
-                                        // :className="{'rotate-180': open, 'rotate-0': !open}"
-                                        className="inline w-4 h-4 transition-transform duration-200 transform">
-                                        <path fillRule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clipRule="evenodd"></path>
-                                    </svg>
-                                </button>
-                                <div
-                                    // x-show="open" x-transition:enter="transition ease-out duration-100"
-                                    //     x-transition:enter-start="transform opacity-0 scale-95"
-                                    //     x-transition:enter-end="transform opacity-100 scale-100"
-                                    //     x-transition:leave="transition ease-in duration-75"
-                                    //     x-transition:leave-start="transform opacity-100 scale-100"
-                                    //     x-transition:leave-end="transform opacity-0 scale-95"
-                                    className="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
-                                    <div className="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
-                                        <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                            href="@">Settings</a>
-                                        <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                            href="@">Help</a>
-                                        <div className="border-b"></div>
-                                        <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                            href="@">Logout</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-                {/* <!-- End of Navbar --> */}
-
                 <div className="container mx-auto my-5 p-5">
                     <div className="md:flex no-wrap md:-mx-2 ">
                         {/* <!-- Left Side --> */}
@@ -103,54 +112,11 @@ const Accounts = () => {
                                     </li>
                                 </ul>
                             </div>
-                            {/* <!-- End of profile card --> */}
                             <div className="my-4"></div>
-                            {/* <!-- Friends card --> */}
-                            <div className="bg-white p-3 hover:shadow">
-                                <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
-                                    <span className="text-green-500">
-                                        <svg className="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                    </span>
-                                    <span>Similar Profiles</span>
-                                </div>
-                                <div className="grid grid-cols-3">
-                                    <div className="text-center my-2">
-                                        <img className="h-16 w-16 rounded-full mx-auto"
-                                            src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
-                                            alt="" />
-                                        <a href="@" className="text-main-color">Kojstantin</a>
-                                    </div>
-                                    <div className="text-center my-2">
-                                        <img className="h-16 w-16 rounded-full mx-auto"
-                                            src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4"
-                                            alt="" />
-                                        <a href="@" className="text-main-color">James</a>
-                                    </div>
-                                    <div className="text-center my-2">
-                                        <img className="h-16 w-16 rounded-full mx-auto"
-                                            src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-                                            alt="" />
-                                        <a href="@" className="text-main-color">Natie</a>
-                                    </div>
-                                    <div className="text-center my-2">
-                                        <img className="h-16 w-16 rounded-full mx-auto"
-                                            src="https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/f04b52da-12f2-449f-b90c-5e4d5e2b1469_361x361.png"
-                                            alt="" />
-                                        <a href="@" className="text-main-color">Casey</a>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* <!-- End of friends card --> */}
                         </div>
-                        {/* <!-- Right Side --> */}
                         <div className="w-full md:w-9/12 mx-2 h-64">
-                            {/* <!-- Profile tab --> */}
-                            {/* <!-- About Section --> */}
                             <div className="bg-white p-3 shadow-sm rounded-sm">
+
                                 <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                                     <span clas="text-green-500">
                                         <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -161,74 +127,189 @@ const Accounts = () => {
                                     </span>
                                     <span className="tracking-wide">About</span>
                                 </div>
+
                                 <div className="text-gray-700">
                                     <div className="grid md:grid-cols-2 text-sm">
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">First Name</div>
-                                            <input type="text" className="px-4 py-2" placeholder='Jana' />
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' name='firstName' onChange={getFormData} placeholder='Jana' />
+                                            ) : (
+                                                <div className="px-4 py-2">jana</div>
+                                            )}
                                         </div>
                                         <div className="grid grid-cols-2">
+
                                             <div className="px-4 py-2 font-semibold">Last Name</div>
-                                            <input type="text" className="px-4 py-2" placeholder='doe' />
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' name='lastName' onChange={getFormData} placeholder='Loada' />
+                                            ) : (
+                                                <div className="px-4 py-2">loada</div>
+                                            )}
 
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Gender</div>
-                                            <div class="relative inline-block text-left">
-                                                <div>
-                                                    <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                                        Select Gender
-                                                        <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-
-                                                <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                                    <div class="py-1" role="none">
-                                                        {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
-                                                        <button class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Male</button>
-                                                        <button class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Female</button>
-                                                        <button class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Other</button>
-                                                        
+                                            {isEditable ? (
+                                                <div className="relative inline-block text-left">
+                                                    <div>
+                                                        <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={handleGenderOpen}>
+                                                            {formData.gender ? formData.gender : "Select Gender"}
+                                                            <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    {isGenderOpen && (
 
+
+                                                        <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                                                            <div className="py-1" role="none">
+                                                                <button className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0" onClick={() => handleGenderData("Male")}>Male</button>
+                                                                <button className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1" onClick={() => handleGenderData("Female")}>Female</button>
+                                                                <button className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-2" onClick={() => handleGenderData("Other")}>Other</button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="px-4 py-2 font-bold text-center">{formData.gender ? formData.gender : "Select Gender"}</div>
+
+                                            )}
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Contact No.</div>
-                                            <div className="px-4 py-2">+11 998001001</div>
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' name='phoneNumber' onChange={getFormData} />
+                                            ) : (
+                                                <div className="px-4 py-2">+11 998001001</div>
+                                            )}
                                         </div>
                                         <div className="grid grid-cols-2">
-                                            <div className="px-4 py-2 font-semibold">Current Address</div>
-                                            <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                                            <div className="px-4 py-2 font-semibold">Street</div>
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' name="street" onChange={getFormData} />
+                                            ) : (
+                                                <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                                            )}
                                         </div>
                                         <div className="grid grid-cols-2">
-                                            <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                                            <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
+
+                                            <div className="px-4 py-2 font-semibold">Pincode </div>
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' name='pincode' onChange={getFormData} />
+                                            ) : (
+                                                <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                                            )}
+                                        </div>
+                                        <div className="grid grid-cols-2">
+                                            <div className="px-4 py-2 font-semibold">Contries</div>
+                                            {isEditable ? (
+                                                <div className="relative inline-block text-left">
+
+                                                    <div>
+                                                        <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={handleCountryOpen}>
+                                                            {formData.country ? formData.country : 'Select Country'}
+                                                            <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    {isCountryOpen && (
+                                                        <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                                                            <div className="py-1" role="none">
+                                                                {countries.map((country, index) => (
+                                                                    <button
+                                                                        key={index}
+                                                                        className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0" onClick={() => handleCountryData(country.name)} name='country'>{country.name}({country.code})</button>
+                                                                ))}                                                        </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="px-4 py-2 text-center font-bold">{formData.country ? formData.country : "Select Contries"}</div>
+
+                                            )}
+
+
+                                        </div>
+                                        <div className="grid grid-cols-2">
+                                            <div className="px-4 py-2 font-semibold">State</div>
+                                            {isEditable ? (
+                                                <div className="relative inline-block text-left">
+                                                    <div>
+                                                        <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={handleStateOpen}>
+                                                            {formData.state ? formData.state : 'Select State'}
+                                                            <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    {isStateOpen && (
+                                                        <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                                                            <div className="py-1" role="none">
+                                                                {states.map((state, index) => (
+                                                                    <button key={index} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0"
+                                                                        onClick={() => handleStateData(state.name)}
+                                                                        name='state'>{state.name}({state.abbreviation})</button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                            ) : (
+                                                <div className="px-4 py-2 text-center font-bold">{formData.state ? formData.state : "Select State"}</div>
+
+                                            )}
+
+
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Email.</div>
-                                            <div className="px-4 py-2">
-                                                <a className="text-blue-800" href="mailto:jane@example.com">jane@example.com</a>
-                                            </div>
+                                            {isEditable ? (
+                                                <input type="text" className='px-4 py-2' />
+
+                                            ) : (
+                                                <div className="px-4 py-2">
+                                                    <a className="text-blue-800" href="mailto:jane@example.com">jane@example.com</a>
+                                                </div>
+                                            )
+
+                                            }
+
+
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Birthday</div>
-                                            <div className="px-4 py-2">Feb 06, 1998</div>
+                                            {
+                                                isEditable ? (
+                                                    <DatePicker selected={date} onChange={handleDateChange} />
+                                                ) : (
+                                                    <div className="px-4 py-2">{formData.dateOfBirth ? formData.dateOfBirth : "Select Data"}</div>
+                                                )}
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
-                                    Full Information</button>
+                                <form onSubmit={handleSubmit}>
+
+                                    {isEditable ? (
+                                        <button
+                                            type='submit'
+                                            className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4" onClick={toggleEdit}>Save Changes</button>
+                                    ) : (
+
+
+                                        <button
+                                            className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4" onClick={toggleEdit}>Edit Profile</button>
+                                    )}
+                                </form>
                             </div>
+
                             {/* <!-- End of about section --> */}
 
                             <div className="my-4"></div>
 
-                            {/* <!-- Experience and education --> */}
                             <div className="bg-white p-3 shadow-sm rounded-sm">
 
                                 <div className="grid grid-cols-2">
@@ -291,10 +372,12 @@ const Accounts = () => {
                                 {/* <!-- End of Experience and education grid --> */}
                             </div>
                             {/* <!-- End of profile tab --> */}
+
                         </div>
                     </div>
                 </div>
-            </div></div>
+            </div >
+        </div >
     )
 }
 

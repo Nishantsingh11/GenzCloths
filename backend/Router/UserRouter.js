@@ -2,12 +2,14 @@ const User = require("../Schema/UserSchema");
 const express = require("express");
 const bodyParser = require("body-parser");
 const authMiddleware = require("../Middleware/authMiddleware");
+const cors = require("cors");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // app.use(bodyParser.json()); // Use bodyParser middleware first\
 const router = express.Router();
 router.use(bodyParser.json());
+router.use(cors());
 
 // // create a user
 router.post("/register", async (req, res) => {
