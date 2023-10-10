@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { categories } from '../Category/Category';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
@@ -34,6 +34,15 @@ const FormForSeller = () => {
     }
     console.log(basicData);
 
+    useEffect(() => {
+        // Update basicData whenever selectedMainCategory or selectedSubCategory changes
+        setBasicData({
+            ...basicData,
+            productMainCategory: selectedMainCategory,
+            productSubCategory: selectedSubCategory,
+        });
+    }, [selectedMainCategory, selectedSubCategory]);
+
 
     const handleToggle = () => {
         setIsToggle(!isToggle)
@@ -64,11 +73,11 @@ const FormForSeller = () => {
         setSelectedSubCategory(subcategorie)
         setBasicData({ ...basicData, productSubCategory: selectedSubCategory })
     }
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
 
-       await axios.post("http://localhost:8080/product/createproduct", basicData)
+        await axios.post("http://localhost:8080/product/createproduct", basicData)
             .then((res) => {
                 console.log(res);
             })

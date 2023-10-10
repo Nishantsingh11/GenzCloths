@@ -43,7 +43,6 @@ Productrouter.post("/createproduct", (req, res) => {
       !productMaterials
     ) {
       return res.status(400).json({ msg: "Please enter all fields" });
-     
     }
     const data = ProductSchema({
       productName,
@@ -108,10 +107,33 @@ Productrouter.get("/getproduct/:id", (req, res) => {
   }
 });
 // get product by category
-Productrouter.get("/getproductbycategory/:category", (req, res) => {
+Productrouter.get(
+  "/getproductbycategory/:category/:subcategory",
+  (req, res) => {
+    try {
+      const { category,subcategory } = req.params;
+      const data = ProductSchema.find({
+        productMainCategory: category,
+        productSubCategory: subcategory,
+      })
+        .then((product) => {
+          res.status(200).json(product);
+        })
+        .catch((err) => {
+          res.status(400).json({ msg: "something went wrong" });
+          console.log(err);
+        });
+    } catch (err) {
+      console.log("err", err);
+      res.status(400).json({ msg: "Not able to get product" });
+    }
+  }
+);
+// short product by price
+Productrouter.get("/shortproductbypriceascending", (req, res) => {
   try {
-    const { category } = req.params;
-    const data = ProductSchema.find({ productCategory: category })
+    ProductSchema.find()
+      .sort({ productPrice: 1 })
       .then((product) => {
         res.status(200).json(product);
       })
@@ -119,37 +141,21 @@ Productrouter.get("/getproductbycategory/:category", (req, res) => {
         res.status(400).json({ msg: "something went wrong" });
       });
   } catch (err) {
-    console.log("err", err);
     res.status(400).json({ msg: "Not able to get product" });
   }
 });
-// short product by price
-Productrouter.get("/shortproductbypriceascending",(req,res)=>{
-    try{
-        ProductSchema.find().sort({productPrice:1})
-        .then((product)=>{
-        res.status(200).json(product)
-        })
-        .catch((err)=>{
-        res.status(400).json({msg:"something went wrong"})
-        })
-    }
-    catch(err){
-        res.status(400).json({msg:"Not able to get product"})
-    }
-})
-Productrouter.get("/shortproductbypricedescending",(req,res)=>{
-    try{
-        ProductSchema.find().sort({productPrice:-1})
-        .then((product)=>{
-        res.status(200).json(product)
-        })
-        .catch((err)=>{
-        res.status(400).json({msg:"something went wrong"})
-        })
-    }
-    catch(err){
-        res.status(400).json({msg:"Not able to get product"})
-    }
-})
+Productrouter.get("/shortproductbypricedescending", (req, res) => {
+  try {
+    ProductSchema.find()
+      .sort({ productPrice: -1 })
+      .then((product) => {
+        res.status(200).json(product);
+      })
+      .catch((err) => {
+        res.status(400).json({ msg: "something went wrong" });
+      });
+  } catch (err) {
+    res.status(400).json({ msg: "Not able to get product" });
+  }
+});
 module.exports = Productrouter;

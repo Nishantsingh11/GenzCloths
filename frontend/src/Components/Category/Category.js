@@ -1,6 +1,6 @@
 export const categories = [
   {
-    name: "Men's Clothing",
+    name: "Mens Clothing",
     subcategories: [
       "T-Shirts",
       "Shirts",
@@ -12,7 +12,7 @@ export const categories = [
     ],
   },
   {
-    name: "Women's Clothing",
+    name: "Womens Clothing",
     subcategories: [
       "Dresses",
       "Tops",
@@ -24,19 +24,19 @@ export const categories = [
     ],
   },
   {
-    name: "Kids' Clothing",
+    name: "Kids Clothing",
     subcategories: [
-      "Boys' Clothing",
-      "Girls' Clothing",
+      "Boys Clothing",
+      "Girls Clothing",
       "Baby Clothing",
-      "Kid's Shoes",
+      "Kids Shoes",
     ],
   },
   {
     name: "Footwear",
     subcategories: [
-      "Men's Shoes",
-      "Women's Shoes",
+      "Mens Shoes",
+      "Womens Shoes",
       "Sports Shoes",
       "Boots",
       "Sandals",
@@ -128,7 +128,7 @@ export const categories = [
   },
   {
     name: "Swimwear",
-    subcategories: ["Men's Swimwear", "Women's Swimwear", "Beach Accessories"],
+    subcategories: ["Mens Swimwear", "Womens Swimwear", "Beach Accessories"],
   },
   {
     name: "Vintage and Retro",

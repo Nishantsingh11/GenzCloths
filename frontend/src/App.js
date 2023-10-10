@@ -8,6 +8,7 @@ import Registration from './Components/Registration/Registration';
 import NotFound from './Components/NotFound';
 import FormForSeller from './Components/ForSeller/FormForSeller';
 import ItemsForSeller from './Components/ForSeller/ItemsForSeller';
+import ItembyCategory from './Components/Category/ItembyCategory';
 function App() {
   return (
     <div className="container mx-auto">
@@ -22,7 +23,8 @@ function App() {
       <Route path = "/registration" element = {<Registration />} />
       <Route path = "/seller/additem" element = {<FormForSeller />} />
       <Route path = "/seller/yourItem" element = {<ItemsForSeller />} />
-      </Routes>     
+      <Route path="/category/:maincategory/:subcategory" element={<ItembyCategory />} />
+      </Routes>       
      </BrowserRouter>
       </div>
   );

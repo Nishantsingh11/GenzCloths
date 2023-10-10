@@ -25,7 +25,7 @@ const Items = () => {
                     <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
                         <div className="space-x-2 flex text-sm font-bold">
                             <label>
-                                <input className="sr-only peer" name="size" type="radio" value="xs" checked />
+                                <input className="sr-only peer" name="size" type="radio" value="xs"  />
                                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-violet-600 peer-checked:text-white">
                                     XS
                                 </div>
