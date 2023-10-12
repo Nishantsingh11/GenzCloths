@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { categories } from './Category';
 import { Link } from 'react-router-dom';
 
@@ -30,8 +30,12 @@ const CategoryDropdown = () => {
       category: category,
       subcategory: subcategories,
     });
-    console.log(bothcategory);
   }
+  useEffect(() => {
+    if (bothcategory.subcategory && bothcategory.category) {
+      setIsOpen(false)
+    }
+  }, [bothcategory])
   return (
     <div className="relative inline-block text-left">
       <button
@@ -68,8 +72,8 @@ const CategoryDropdown = () => {
             </button>
             <ul
               className={`bg-white border rounded-sm absolute transition duration-150 ease-in-out origin-top-left min-w-54 w-56 text-center ml-52 ${selectedCategory === category && subcategoryVisibility[category.name]
-                  ? 'block'
-                  : 'hidden'
+                ? 'block'
+                : 'hidden'
                 }`}
             >
               {category.subcategories.map((subcategory) => (

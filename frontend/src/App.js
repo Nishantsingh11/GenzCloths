@@ -9,6 +9,7 @@ import NotFound from './Components/NotFound';
 import FormForSeller from './Components/ForSeller/FormForSeller';
 import ItemsForSeller from './Components/ForSeller/ItemsForSeller';
 import ItembyCategory from './Components/Category/ItembyCategory';
+import SingleProduct from './Components/Product/SingleProduct';
 function App() {
   return (
     <div className="container mx-auto">
@@ -24,6 +25,7 @@ function App() {
       <Route path = "/seller/additem" element = {<FormForSeller />} />
       <Route path = "/seller/yourItem" element = {<ItemsForSeller />} />
       <Route path="/category/:maincategory/:subcategory" element={<ItembyCategory />} />
+      <Route path ="/product/:id" element = {< SingleProduct />} />
       </Routes>       
      </BrowserRouter>
       </div>

@@ -111,7 +111,7 @@ Productrouter.get(
   "/getproductbycategory/:category/:subcategory",
   (req, res) => {
     try {
-      const { category,subcategory } = req.params;
+      const { category, subcategory } = req.params;
       const data = ProductSchema.find({
         productMainCategory: category,
         productSubCategory: subcategory,
@@ -130,32 +130,40 @@ Productrouter.get(
   }
 );
 // short product by price
-Productrouter.get("/shortproductbypriceascending", (req, res) => {
-  try {
-    ProductSchema.find()
-      .sort({ productPrice: 1 })
-      .then((product) => {
-        res.status(200).json(product);
-      })
-      .catch((err) => {
-        res.status(400).json({ msg: "something went wrong" });
-      });
-  } catch (err) {
-    res.status(400).json({ msg: "Not able to get product" });
+Productrouter.get(
+  "/getproductbycategory/:category/:subcategory/:sort",
+  (req, res) => {
+    try {
+      const { category, subcategory, sort } = req.params;
+      if (sort == "ascending") {
+        ProductSchema.find({
+          productMainCategory: category,
+          productSubCategory: subcategory,
+        })
+          .sort({ productPrice: 1 })
+          .then((product) => {
+            res.status(200).json(product);
+          })
+          .catch((err) => {
+            res.status(400).json({ msg: "something went wrong" });
+          });
+      }
+      if (sort == "descending") {
+        ProductSchema.find({
+          productMainCategory: category,
+          productSubCategory: subcategory,
+        })
+          .sort({ productPrice: -1 })
+          .then((product) => {
+            res.status(200).json(product);
+          })
+          .catch((err) => {
+            res.status(400).json({ msg: "something went wrong" });
+          });
+      }
+    } catch (err) {
+      res.status(400).json({ msg: "Not able to get product" });
+    }
   }
-});
-Productrouter.get("/shortproductbypricedescending", (req, res) => {
-  try {
-    ProductSchema.find()
-      .sort({ productPrice: -1 })
-      .then((product) => {
-        res.status(200).json(product);
-      })
-      .catch((err) => {
-        res.status(400).json({ msg: "something went wrong" });
-      });
-  } catch (err) {
-    res.status(400).json({ msg: "Not able to get product" });
-  }
-});
+);
 module.exports = Productrouter;

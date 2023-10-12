@@ -1,32 +1,31 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
-const ProductList = (maincategory, subcategories) => {
-    const [products, setProducts] = useState()
-    // console.log("comming from product list", maincategory, subcategories);
-    // console.log("form line number 6 ",maincategory.maincategory, maincategory.subcategories);
-    const productMainCategory = maincategory.maincategory.maincategory
-    const productSubCategory = maincategory.maincategory.subcategory
+const ProductList = ({ maincategory, subcategory, order }) => {
+  const [products, setProducts] = useState()
+  useEffect(()=>{
+    if (order.order !== "") {
+      const apiUrlForOrder = `http://localhost:8080/product/getproductbycategory/${maincategory.maincategory}/${subcategory.subcategory}/${order.order}`
+     axios.get(apiUrlForOrder)
+     .then((res)=>{
+       setProducts(res.data)
+     })
+   }
+  },[order.order,maincategory.maincategory,subcategory.subcategory])
+  
 
+  const apiUrl = `http://localhost:8080/product/getproductbycategory/${maincategory.maincategory}/${subcategory.subcategory}`;
+  useEffect(() => {
+    axios.get(apiUrl)
+      .then((res) => {
+        setProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
 
-    const apiUrl = `http://localhost:8080/product/getproductbycategory/${productMainCategory}/${productSubCategory}`;
-    // console.log(apiUrl);
-
-
-
-
-    useEffect(() => {
-        axios.get(apiUrl)
-            .then((res) => {
-                console.log(res);
-                console.log(res.data);
-                setProducts(res.data)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-
-    },[apiUrl]);
+  }, [apiUrl]);
 
   return (
     <div>
@@ -35,6 +34,8 @@ const ProductList = (maincategory, subcategories) => {
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
+            
+            <Link to = {`/product/${product._id}`}>
             <div className="group relative" key={product._id}>
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img
@@ -57,9 +58,12 @@ const ProductList = (maincategory, subcategories) => {
                 <p className="text-sm font-medium text-gray-900">${product.productPrice}</p>
               </div>
             </div>
+            </Link>
           ))}
-        </div>
+       </div>
       )}
+
+
     </div>
   );
 };
