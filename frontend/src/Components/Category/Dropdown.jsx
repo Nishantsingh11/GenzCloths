@@ -43,7 +43,7 @@ const CategoryDropdown = () => {
         className="outline-none focus:outline-none border px-3 py-1 bg-white rounded-sm flex items-center min-w-32"
       >
         <span className="pr-1 font-semibold flex-1">
-          {selectedCategory ? selectedCategory.name : 'Dropdown'}
+          {selectedCategory ? selectedCategory.name : 'Category'}
         </span>
         <span>
           <svg

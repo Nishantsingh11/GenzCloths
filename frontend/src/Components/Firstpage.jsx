@@ -26,6 +26,8 @@ const Firstpage = () => {
                 {text}
               </span>
             ))}
+            <br />
+          AND MANY MORE
           </p>
         </div>
         <div className='h-4/6 w-4/12'>

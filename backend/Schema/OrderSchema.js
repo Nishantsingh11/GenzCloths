@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
+
 const OrderSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "UserSchema",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Reference the "User" model, not "UserSchema"
     required: true,
   },
   items: [
     {
       product: {
-        type: mongoose.Schema.ObjectId,
-        ref: "ProductSchema",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product", // Reference the "Product" model, not "ProductSchema"
         required: true,
       },
       quantity: {
@@ -29,7 +30,7 @@ const OrderSchema = new mongoose.Schema({
   },
   totalAmount: {
     type: Number,
-    required: true,
+    // required: true,
   },
   status: {
     type: String,
@@ -37,4 +38,5 @@ const OrderSchema = new mongoose.Schema({
     default: "Pending",
   },
 });
+
 module.exports = mongoose.model("Order", OrderSchema);

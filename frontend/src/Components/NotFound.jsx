@@ -2,27 +2,35 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 const NotFound = () => {
     return (
-        <div>
-            {/* <!-- component --> */}
-            <main className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
-                <h1 className="text-9xl font-extrabold text-white tracking-widest">404</h1>
-                <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
-                    Page Not Found
-                </div>
-                <button className="mt-5">
-                    <a href='@'
-                        className="relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-orange-500 focus:outline-none focus:ring"
-                    >
-                        <span
-                            className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"
-                        ></span>
+        <section class="bg-white ">
+            <div class="container min-h-screen px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
+                <div class="wf-ull lg:w-1/2">
+                    <p class="text-sm font-medium text-blue-500">404 error</p>
+                    <h1 class="mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">Page not found</h1>
+                    <p class="mt-4 text-gray-500">Sorry, the page you are looking for doesn't exist.Here are some helpful links:</p>
 
-                        <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
-                            <Link to = "/">Go Home</Link>
-                        </span>
-                    </a>
-                </button>
-            </main></div>
+                    <div class="flex items-center mt-6 gap-x-3">
+                        <button class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto ">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:rotate-180">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                            </svg>
+
+
+                            <span>Go back</span>
+                        </button>
+                        <Link to="/">
+                        <button class="w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto hover:bg-blue-600">
+                            Take me home
+                        </button>
+                    </Link>
+                </div>
+            </div>
+
+            <div class="relative w-full mt-12 lg:w-1/2 lg:mt-0">
+                <img class="w-full max-w-lg lg:mx-auto" src="https://merakiui.com/images/components/illustration.svg" alt="" />
+            </div>
+        </div>
+        </section >
     )
 }
 

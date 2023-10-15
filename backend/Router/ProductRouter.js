@@ -140,7 +140,7 @@ Productrouter.get(
           productMainCategory: category,
           productSubCategory: subcategory,
         })
-          .sort({ productPrice: 1 })
+          .sort({ productDiscountPrice: 1 })
           .then((product) => {
             res.status(200).json(product);
           })
@@ -153,7 +153,7 @@ Productrouter.get(
           productMainCategory: category,
           productSubCategory: subcategory,
         })
-          .sort({ productPrice: -1 })
+          .sort({ productDiscountPrice: -1 })
           .then((product) => {
             res.status(200).json(product);
           })

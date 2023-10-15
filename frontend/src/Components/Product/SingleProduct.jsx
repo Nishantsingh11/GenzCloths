@@ -9,6 +9,7 @@ const SingleProduct = () => {
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [quantity, setQuantity] = useState(1)
+    const [getTotal,setGetTotal] = useState([])
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [cart, setCart] = useState({
         productId: id,
@@ -71,7 +72,8 @@ const SingleProduct = () => {
             try {
                 const res = await axios.get("http://localhost:8080/cart/getcart", config);
                 console.log(res.data);
-                setGetCartItemFromdb(res.data.CartItems);
+                setGetCartItemFromdb(res.data.cartItems);
+                setGetTotal(res.data.total)
                 setIsCartLoding(false);
             } catch (err) {
                 console.log(err);
@@ -81,11 +83,13 @@ const SingleProduct = () => {
 
 
     }, [config])
-    if (getCartItemFromdb.length > 0) {
-        // console.log(getCartItemFromdb);
-        setIsCartLoding(false)
-    }
+    useEffect(() => {
+        if (getCartItemFromdb?.length > 0) {
+            setIsCartLoding(false);
+        }
+    }, [getCartItemFromdb]);
     console.log(getCartItemFromdb);
+    console.log(getTotal);
 
     return (
         <>
@@ -176,10 +180,11 @@ const SingleProduct = () => {
                             </div>
                         </div>
                     </section>
-                    <CartDailog isCartOpen = {isCartOpen} 
-                    handlecloseButton={handlecloseButton}
-                    isCartLoding={isCartLoding}
-                    getCartItemFromdb={getCartItemFromdb}
+                    <CartDailog isCartOpen={isCartOpen}
+                        handlecloseButton={handlecloseButton}
+                        isCartLoding={isCartLoding}
+                        getCartItemFromdb={getCartItemFromdb}
+                        getTotal = {getTotal}
                     />
                 </div>
             )}
@@ -190,17 +195,18 @@ const SingleProduct = () => {
 export default SingleProduct
 
 
-export const CartDailog = ({isCartOpen,handlecloseButton,getCartItemFromdb}) => {
+export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb,getTotal }) => {
     const [isCartLoding, setIsCartLoding] = useState(true)
 
-   const product = getCartItemFromdb.items
-   useEffect(()=>{
-         if(product?.length > 0){
-              setIsCartLoding(false)
-         }
-   },[product])
 
-   console.log(product)
+    useEffect(() => {
+        if (getCartItemFromdb?.length > 0) {
+            setIsCartLoding(false)
+        }
+    }, [getCartItemFromdb])
+
+
+    console.log(getCartItemFromdb)
     return (
         <div>
 
@@ -242,8 +248,9 @@ export const CartDailog = ({isCartOpen,handlecloseButton,getCartItemFromdb}) => 
                                                         <div className="mt-8">
                                                             <div className="flow-root">
                                                                 <ul className="-my-6 divide-y divide-gray-200">
-                                                                {product.map((item,index)=>(
-                                                                    <li className="flex py-6" key = {index}>
+                                                                    {getCartItemFromdb.map((items, index) => (
+                                                                        <li className="flex py-6" key={index}>
+
                                                                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                                 <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
                                                                             </div>
@@ -252,14 +259,15 @@ export const CartDailog = ({isCartOpen,handlecloseButton,getCartItemFromdb}) => 
                                                                                 <div>
                                                                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                                                                         <h3>
-                                                                                            <a href="@">Throwback Hip Bag</a>
+                                                                                            <a href="@">{items.productDetails.productName}</a>
                                                                                         </h3>
-                                                                                        <p className="ml-4">$90.00</p>
+                                                                                        <p className="ml-4">${items
+                                                                                            .productDetails.productPrice}</p>
                                                                                     </div>
-                                                                                    <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                                                                                    <p className="mt-1 text-sm text-gray-500">{items.productDetails.productBrand}</p>
                                                                                 </div>
                                                                                 <div className="flex flex-1 items-end justify-between text-sm">
-                                                                                    <p className="text-gray-500">{item.quantity}</p>
+                                                                                    <p className="text-gray-500">{items.quantity}</p>
 
                                                                                     <div className="flex">
                                                                                         <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
@@ -267,8 +275,8 @@ export const CartDailog = ({isCartOpen,handlecloseButton,getCartItemFromdb}) => 
                                                                                 </div>
                                                                             </div>
                                                                         </li>
-                                                                ))}
-                                                         
+                                                                    ))}
+
 
                                                                     {/* <!-- More products... --> */}
                                                                 </ul>
@@ -279,8 +287,8 @@ export const CartDailog = ({isCartOpen,handlecloseButton,getCartItemFromdb}) => 
 
                                             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                                 <div className="flex justify-between text-base font-medium text-gray-900">
-                                                    <p>Subtotal</p>
-                                                    <p>$262.00</p>
+                                                    <p>Total</p>
+                                                    <p>${getTotal}</p>
                                                 </div>
                                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                                 <div className="mt-6">

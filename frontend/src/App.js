@@ -12,6 +12,8 @@ import ItembyCategory from './Components/Category/ItembyCategory';
 import SingleProduct from './Components/Product/SingleProduct';
 import AddToCart from './Components/Product/AddToCart';
 import { Toaster } from 'react-hot-toast';
+import Order from './Components/Order/Order';
+import OrderHistory from './Components/Order/LastOrder';
 function App() {
   return (
     <div className="container mx-auto">
@@ -30,6 +32,8 @@ function App() {
       <Route path="/category/:maincategory/:subcategory" element={<ItembyCategory />} />
       <Route path ="/product/:id" element = {< SingleProduct />} />
       <Route path = "/addtocart/:id/:qty" element = {<AddToCart />} />
+      <Route path = "/order" element = {<Order />} />
+      <Route path = "/orderhistory" element = {<OrderHistory />} />
       </Routes>       
      </BrowserRouter>
       </div>
