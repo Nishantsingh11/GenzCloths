@@ -8,6 +8,7 @@
   const AddToCartRouter = require("./Router/AddToCartRouter")
   const OrderRouter = require("./Router/OrderRouter")
   const cors = require("cors")
+  const wishlistRouter = require("./Router/WishlistRouter")
   // Middleware setup, if any
 
 
@@ -15,7 +16,8 @@
   app.use('/user', UserRoutes); // This will prefix all routes in userRoutes with '/user'
   app.use('/product', Productrouter)
   app.use('/cart', AddToCartRouter)
-  app.use("/order", require("./Router/OrderRouter"))
+  app.use("/order",OrderRouter)
+  app.use("/wishlist", wishlistRouter)
   app.use(cors())
   
 

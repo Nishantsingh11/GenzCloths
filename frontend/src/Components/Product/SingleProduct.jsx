@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast';
 
 
@@ -9,7 +9,7 @@ const SingleProduct = () => {
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [quantity, setQuantity] = useState(1)
-    const [getTotal,setGetTotal] = useState([])
+    const [getTotal, setGetTotal] = useState([])
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [cart, setCart] = useState({
         productId: id,
@@ -29,7 +29,7 @@ const SingleProduct = () => {
     useEffect(() => {
         axios.get(`http://localhost:8080/product/getproduct/${id}`)
             .then((res) => {
-                // console.log(res.data)
+                console.log(res.data)
                 setData(res.data)
                 setIsLoading(false)
 
@@ -38,6 +38,9 @@ const SingleProduct = () => {
                 console.log(err);
             })
     }, [id])
+    const Sizes = data?.productSize.split(",")
+    console.log(Sizes);
+
     const handleQuantity = (e) => {
         setQuantity(e.target.value)
         setCart({
@@ -45,7 +48,6 @@ const SingleProduct = () => {
             quantity: e.target.value
         })
     }
-    // console.log(cart);
     const handleAddToCart = () => {
         axios.post("http://localhost:8080/cart/addtocart", cart, config)
             .then((res) => {
@@ -91,10 +93,25 @@ const SingleProduct = () => {
     console.log(getCartItemFromdb);
     console.log(getTotal);
 
+
+
+    const handleAddToWishList = (id)=>{
+        axios.post("http://localhost:8080/wishlist/createwishlist",{productId:id},config)
+        .then((res)=>{
+            console.log(res.data);
+            toast.success(res.data.msg)
+        })
+        .catch((res)=>{
+            console.log(res);
+            toast.error("something went wrong")
+        })
+    }
     return (
         <>
             {isLoading ? (
-                <h1>Loading...</h1>
+                <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
             ) : (
                 <div>
                     <section className="text-gray-700 body-font overflow-hidden bg-white">
@@ -137,10 +154,17 @@ const SingleProduct = () => {
                                             <span className="mr-3">Size</span>
                                             <div className="relative">
                                                 <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
-                                                    <option>SM</option>
-                                                    <option>M</option>
-                                                    <option>L</option>
-                                                    <option>XL</option>
+                                                    {
+                                                        Sizes?.map((item, index) => (
+                                                            <>
+
+                                                                <option>{item}</option>
+
+
+                                                            </>
+
+                                                        ))
+                                                    }
                                                 </select>
                                                 <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                                                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
@@ -168,8 +192,11 @@ const SingleProduct = () => {
                                         <button className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
                                             onClick={handleAddToCart}
                                         >Add To Cart</button>
-                                        <button className="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Buy now</button>
-                                        <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                                        <Link to={`/order/${data._id}`}>
+                                            <button className="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Buy now</button>
+                                        </Link>
+
+                                        <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4" onClick={()=>handleAddToWishList(data._id)}>
                                             <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
                                                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                                             </svg>
@@ -184,7 +211,7 @@ const SingleProduct = () => {
                         handlecloseButton={handlecloseButton}
                         isCartLoding={isCartLoding}
                         getCartItemFromdb={getCartItemFromdb}
-                        getTotal = {getTotal}
+                        getTotal={getTotal}
                     />
                 </div>
             )}
@@ -195,7 +222,7 @@ const SingleProduct = () => {
 export default SingleProduct
 
 
-export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb,getTotal }) => {
+export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb, getTotal }) => {
     const [isCartLoding, setIsCartLoding] = useState(true)
 
 
@@ -242,7 +269,9 @@ export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb,ge
                                                 {
                                                     isCartLoding ? (
                                                         <div className="mt-8">
-                                                            <h1>loading...</h1>
+                                                           <div className="flex justify-center items-center h-screen">
+                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+                </div>
                                                         </div>
                                                     ) : (
                                                         <div className="mt-8">
@@ -292,7 +321,7 @@ export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb,ge
                                                 </div>
                                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                                 <div className="mt-6">
-                                                    <a href="@" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+                                                    <Link to="/order" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</Link>
                                                 </div>
                                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                                     <p>

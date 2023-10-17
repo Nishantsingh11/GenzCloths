@@ -94,18 +94,23 @@ Productrouter.get("/getallproduct", (req, res) => {
 // get product by id
 Productrouter.get("/getproduct/:id", (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id; // Remove the colon
     const data = ProductSchema.findById(id)
       .then((product) => {
+        if (!product) {
+          return res.status(404).json({ msg: "Product not found" });
+        } 
         res.status(200).json(product);
       })
       .catch((err) => {
-        res.status(400).json({ msg: "something went wrong" });
+        res.status(400).json({ msg: "Something went wrong" });
+        console.log(err);
       });
   } catch (err) {
     res.status(400).json({ msg: "Not able to get product" });
   }
 });
+
 // get product by category
 Productrouter.get(
   "/getproductbycategory/:category/:subcategory",
@@ -166,4 +171,82 @@ Productrouter.get(
     }
   }
 );
+
+
+Productrouter.delete("/deleteproduct/:id",(req,res)=>{
+  try{
+    const id = req.params.id;
+    ProductSchema.findByIdAndDelete(id)
+    .then((product)=>{
+      if(!product){
+        return res.status(404).json({msg:"Product not found"})
+      }
+      res.status(200).json({msg:"Product deleted successfully"})
+    })
+  }
+  catch(err){
+    res.status(400).json({msg:"Not able to delete product"})
+  }
+})
+
+
+// update product
+// Update product
+Productrouter.put("/editproduct/:id", (req, res) => {
+  const id = req.params.id;
+
+  // Destructure the data from the request body
+  const {
+    productName,
+    productDescription,
+    productMainCategory,
+    productSubCategory,
+    productPrice,
+    productImage,
+    productQuantity,
+    productSize,
+    productColor,
+    productBrand,
+    productRating,
+    productReview,
+    productDiscount,
+    productDiscountPrice,
+    productTags,
+    productMaterials,
+  } = req.body;
+
+  // Create an object with the updated data
+  const updatedProduct = {
+    productName,
+    productDescription,
+    productMainCategory,
+    productSubCategory,
+    productPrice,
+    productImage,
+    productQuantity,
+    productSize,
+    productColor,
+    productBrand,
+    productRating,
+    productReview,
+    productDiscount,
+    productDiscountPrice,
+    productTags,
+    productMaterials,
+  };
+
+  // Use Mongoose's findByIdAndUpdate to find and update the product
+  ProductSchema.findByIdAndUpdate(id, updatedProduct, { new: true })
+    .then((product) => {
+      if (!product) {
+        return res.status(404).json({ msg: "Product not found" });
+      }
+      res.status(200).json({ msg: "Product updated successfully", product });
+    })
+    .catch((err) => {
+      res.status(400).json({ msg: "Something went wrong", err });
+      console.log(err);
+    });
+});
+
 module.exports = Productrouter;

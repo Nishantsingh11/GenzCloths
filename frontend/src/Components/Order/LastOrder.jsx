@@ -33,9 +33,9 @@ const OrderHistory = () => {
           </h1>
         </div>
         {isLoading ? (
-          <div className='text-center'>
-            <h1>Loading order history...</h1>
-          </div>
+          <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
         ) : (
           <div>
             {orderHistory.map((order, index) => (
