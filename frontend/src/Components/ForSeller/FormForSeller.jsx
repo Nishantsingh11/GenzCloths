@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { categories } from '../Category/Category';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
@@ -23,10 +23,22 @@ const FormForSeller = () => {
         productDiscount: '',
         productDiscountPrice: '',
         productTags: '',
+        productImage: null
     })
+    // console.log(imageData);
+    const config = useMemo(() => ({
+        headers: {
+            'Authorization': `${localStorage.getItem("token")}`,
+        },
+    }), []);
 
 
 
+    const handleImage = (e) => {
+        setBasicData({ ...basicData, productImage: e.target.files[0] });
+    };
+
+    console.log(basicData);
     const getBasicData = (e) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -41,7 +53,7 @@ const FormForSeller = () => {
             productMainCategory: selectedMainCategory,
             productSubCategory: selectedSubCategory,
         });
-    }, [selectedMainCategory, selectedSubCategory]);
+    }, []);
 
 
     const handleToggle = () => {
@@ -75,36 +87,44 @@ const FormForSeller = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-
-        await axios.post("http://localhost:8080/product/createproduct", basicData)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        console.log("hello");
-        console.log(basicData);
-        setBasicData({
-            productName: '',
-            productPrice: '',
-            productQuantity: '',
-            productSize: '',
-            productDescription: '',
-            productColor: '',
-            productBrand: '',
-            productMaterials: '',
-            productDiscount: '',
-            productDiscountPrice: '',
-            productTags: '',
-            productMainCategory: '',
-            productSubCategory: '',
-        })
-        setSelectedMainCategory(null);
-        setSelectedSubCategory(null);
-        navigate("/seller/youritem")
-    }
+    
+        const formData = new FormData();
+    
+        // Append all form data to the FormData object
+        for (const key in basicData) {
+            formData.append(key, basicData[key]);
+        }
+    
+        try {
+            const res = await axios.post("http://localhost:8080/product/createproduct", formData, config);
+    
+            console.log(res);
+            navigate("/seller/youritem");
+    
+            // Reset form data
+            setBasicData({
+                productName: '',
+                productPrice: '',
+                productQuantity: '',
+                productSize: '',
+                productDescription: '',
+                productColor: '',
+                productBrand: '',
+                productMaterials: '',
+                productDiscount: '',
+                productDiscountPrice: '',
+                productTags: '',
+                productMainCategory: '',
+                productSubCategory: '',
+                productImage: null, // Reset the image
+            });
+            setSelectedMainCategory(null);
+            setSelectedSubCategory(null);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    
     return (
         <>
             <section className=" py-1 bg-blueGray-50">
@@ -114,6 +134,12 @@ const FormForSeller = () => {
                             <div className="text-center flex justify-between">
                                 <h6 className="text-blueGray-700 text-xl font-bold">
                                     Add item</h6>
+                                <button
+                                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 mx-auto rounded-full"
+                                    onClick={() => navigate("/seller/youritem")}
+                                >
+                                    Back
+                                </button>
                             </div>
                         </div>
                         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -188,6 +214,29 @@ const FormForSeller = () => {
 
                                             ></textarea>
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 space-y-2">
+                                    <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
+                                    <div className="flex items-center justify-center w-full">
+                                        <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+                                            <div className="h-full w-full text-center flex flex-col justify-center items-center  ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                </svg>
+                                                <div className="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
+                                                    <img className="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik " />
+                                                </div>
+                                                <p className="pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <p id="" className="text-blue-600 hover:underline">select a file</p> from your computer</p>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                name="productImage"
+                                                onChange={handleImage}
+                                            />
+
+                                        </label>
                                     </div>
                                 </div>
 

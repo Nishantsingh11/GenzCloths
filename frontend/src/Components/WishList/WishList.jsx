@@ -31,18 +31,18 @@ const WishList = () => {
             })
 
     }, [config])
-    console.log(wishListData?.items);
-    console.log(wishListData?.items.length);
     const handleRemove = (id) => {
         console.log(id);
         axios.delete(`http://localhost:8080/wishlist/removewishlist/${id}`, config)
             .then((res) => {
                 console.log(res);
                 toast.success("Item Remove")
+                setIsLoading(true)
             })
             .catch((err) => {
                 console.log(err);
                 toast.error("someting went wrong")
+                isLoading(false)
             })
     }
     return (
@@ -53,6 +53,10 @@ const WishList = () => {
                 </div>
 
             ) : (
+                <div>
+                { wishListData?.items.length === 0 ? (
+                    <h1>Nothing to show here</h1>
+                ):(
 
 
                 <div className="mx-auto container px-4 md:px-6 2xl:px-0 py-12 flex justify-center items-center">
@@ -129,6 +133,9 @@ const WishList = () => {
                         </div>
                     </div>
                 </div>
+                )}
+                </div>
+                
             )
             }
 

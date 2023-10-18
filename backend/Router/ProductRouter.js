@@ -7,18 +7,25 @@ const Productrouter = express.Router();
 Productrouter.use(bodyParser.json());
 Productrouter.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
+const authMiddleware = require("../Middleware/authMiddleware");
 Productrouter.use(cors());
+const multer = require("multer")
+const upload = multer({ dest: "uploads/" }); // Destination folder for uploaded files
+Productrouter.use("/uploads",express.static("uploads"))
 
 // Create a Product
-Productrouter.post("/createproduct", (req, res) => {
+Productrouter.post("/createproduct", authMiddleware,upload.single("productImage"), (req, res) => {
+  console.log(req);
+  // console.log("Request Body:", req.body);
+  // console.log("Uploaded File:", req.file);
   try {
+    const id = req.user;
     const {
       productName,
       productDescription,
       productMainCategory,
       productSubCategory,
       productPrice,
-      productImage,
       productQuantity,
       productSize,
       productColor,
@@ -30,6 +37,9 @@ Productrouter.post("/createproduct", (req, res) => {
       productTags,
       productMaterials,
     } = req.body;
+    const productImage = req.file.path;
+    // console.log(req.file);
+    console.log("productImage", productImage);
     if (
       !productName ||
       !productDescription ||
@@ -50,7 +60,6 @@ Productrouter.post("/createproduct", (req, res) => {
       productMainCategory,
       productSubCategory,
       productPrice,
-      productImage,
       productQuantity,
       productSize,
       productColor,
@@ -61,11 +70,14 @@ Productrouter.post("/createproduct", (req, res) => {
       productDiscountPrice,
       productTags,
       productMaterials,
+      productImage,
+      userId: id,
     });
+
     data
       .save()
       .then((product) => {
-        res.json({ msg: "Product created successfully" });
+        res.json({ msg: "Product created successfully", product });
       })
       .catch((err) => {
         res.status(400).json({ msg: "something went wrong" });
@@ -99,7 +111,27 @@ Productrouter.get("/getproduct/:id", (req, res) => {
       .then((product) => {
         if (!product) {
           return res.status(404).json({ msg: "Product not found" });
-        } 
+        }
+        res.status(200).json(product);
+      })
+      .catch((err) => {
+        res.status(400).json({ msg: "Something went wrong" });
+        console.log(err);
+      });
+  } catch (err) {
+    res.status(400).json({ msg: "Not able to get product" });
+  }
+});
+
+// get products which belong to that user
+Productrouter.get("/getproductbyuser", authMiddleware, (req, res) => {
+  try {
+    const id = req.user;
+    ProductSchema.find({ userId: id })
+      .then((product) => {  
+        if (!product) {
+          return res.status(404).json({ msg: "Product not found" });
+        }
         res.status(200).json(product);
       })
       .catch((err) => {
@@ -172,23 +204,19 @@ Productrouter.get(
   }
 );
 
-
-Productrouter.delete("/deleteproduct/:id",(req,res)=>{
-  try{
+Productrouter.delete("/deleteproduct/:id", (req, res) => {
+  try {
     const id = req.params.id;
-    ProductSchema.findByIdAndDelete(id)
-    .then((product)=>{
-      if(!product){
-        return res.status(404).json({msg:"Product not found"})
+    ProductSchema.findByIdAndDelete(id).then((product) => {
+      if (!product) {
+        return res.status(404).json({ msg: "Product not found" });
       }
-      res.status(200).json({msg:"Product deleted successfully"})
-    })
+      res.status(200).json({ msg: "Product deleted successfully" });
+    });
+  } catch (err) {
+    res.status(400).json({ msg: "Not able to delete product" });
   }
-  catch(err){
-    res.status(400).json({msg:"Not able to delete product"})
-  }
-})
-
+});
 
 // update product
 // Update product

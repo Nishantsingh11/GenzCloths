@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { AiTwotoneEdit, AiTwotoneDelete } from 'react-icons/ai'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -20,8 +20,13 @@ const ItemsForSeller = () => {
         productTags: '',
         productMaterials: '',
     })
+    const config = useMemo(() => ({
+        headers: {
+            'Authorization': `${localStorage.getItem("token")}`,
+        },
+    }), []);
     useEffect(() => {
-        axios.get("http://localhost:8080/product/getallproduct")
+        axios.get("http://localhost:8080/product/getproductbyuser",config)
             .then((res) => {
                 setItems(res.data)
                 console.log(res.data);
@@ -29,7 +34,7 @@ const ItemsForSeller = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [])
+    }, [config])
     const handleEdit = (id) => {
         axios.get("http://localhost:8080/product/getproduct/" + id)
             .then((res) => {
@@ -92,7 +97,7 @@ const ItemsForSeller = () => {
             })
 
     }
-
+console.log(`http://localhost:8080/product/${items?.productImage}`);
 
     function shortenDescription(description, maxLength) {
         const words = description.split(' ');
@@ -257,7 +262,7 @@ const ItemsForSeller = () => {
                     const tagsArray = item.productTags.split(',')
 
                     return <div className="max-w-sm rounded overflow-hidden shadow-lg mt-5 " key={index}>
-                        <img className="w-full" src="https://images.pexels.com/photos/17916576/pexels-photo-17916576/free-photo-of-silhouette-of-outdoor-stairs.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="Sunset in the mountains" />
+                        <img className="w-full" src={`http://localhost:8080/product/${item?.productImage}`} alt='some img'/>
                         <div className="px-6 py-4">
                             <div className="font-bold text-xl mb-2">{item.productName}</div>
                             <p className="text-gray-700 text-base">

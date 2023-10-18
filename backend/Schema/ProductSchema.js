@@ -68,6 +68,10 @@ const ProductSchema = new mongoose.Schema({
     productDate:{
         type:Date,
         default:Date.now
+    },
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }
 
 })

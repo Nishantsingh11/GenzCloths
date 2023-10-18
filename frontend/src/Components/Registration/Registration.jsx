@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 import {useNavigate} from 'react-router-dom'
 const Registration = () => {
     const navigate = useNavigate()
@@ -27,9 +28,11 @@ const Registration = () => {
             .then(res => {
                 console.log(res);
                 setLogIn(!logIn)
+                toast.success("Registration Success")
             })
             .catch(err => {
                 console.log(err);
+                toast.error("Something went wrong")
             })
         console.log(singupData);
     }
@@ -39,11 +42,13 @@ const Registration = () => {
             .then(res => {
                 console.log(res);
                 localStorage.setItem("token", res.data.token)
+                toast.success("Login Success")
                 navigate('/')
             }
             )   
             .catch(err => {
                 console.log(err);
+                toast.error("Something went wrong")
             }
             )
         console.log(loginData);

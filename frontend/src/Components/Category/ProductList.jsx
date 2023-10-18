@@ -52,7 +52,7 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                   <div className="group relative" key={product._id}>
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <img
-                        src="https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dHNoaXJ0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" // Use the product image URL
+                        src={`http://localhost:8080/product/${product?.productImage}`} // Use the product image URL
                         alt={product.productName} // Use the product name as alt text
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />

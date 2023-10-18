@@ -9,6 +9,8 @@
   const OrderRouter = require("./Router/OrderRouter")
   const cors = require("cors")
   const wishlistRouter = require("./Router/WishlistRouter")
+
+
   // Middleware setup, if any
 
 
@@ -18,6 +20,8 @@
   app.use('/cart', AddToCartRouter)
   app.use("/order",OrderRouter)
   app.use("/wishlist", wishlistRouter)
+  app.use(express.urlencoded({ extended: true }));
+
   app.use(cors())
   
 
