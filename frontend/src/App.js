@@ -15,6 +15,8 @@ import { Toaster } from 'react-hot-toast';
 import Order from './Components/Order/Order';
 import OrderHistory from './Components/Order/LastOrder';
 import SingleOrder from './Components/Order/SingleOrder';
+import ShowAllCategory from './Components/ShowAllCategory';
+import ShowAllSubCategory from './Components/ShowAllSubCategory';
 function App() {
   return (
     <div className="container mx-auto">
@@ -36,6 +38,9 @@ function App() {
       <Route path = "/order" element = {<Order />} />
       <Route path = "/order/:id" element = {<SingleOrder />} />
       <Route path = "/orderhistory" element = {<OrderHistory />} />
+      <Route path = "/showallcategory" element = {<ShowAllCategory />} />
+      <Route path = "/showallsubcategory/:category" element = {<ShowAllSubCategory />} />
+
       </Routes>       
      </BrowserRouter>
       </div>

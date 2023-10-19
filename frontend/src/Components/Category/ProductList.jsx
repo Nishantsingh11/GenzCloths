@@ -38,13 +38,13 @@ const ProductList = ({ maincategory, subcategory, order }) => {
     <div>
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-    </div>
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
       ) : (
         <div>
-          {!products ? (
-            <div className="text-center font-bold text-3xl">Nothing to show here</div>
-          ) : (
+
+          {products && products.length > 0 ? (
+
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {products.map((product, index) => (
 
@@ -76,6 +76,9 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                 </Link>
               ))}
             </div>
+          ) : (
+            <div className="text-center font-bold text-3xl">Nothing to show here</div>
+
           )}
         </div>
       )

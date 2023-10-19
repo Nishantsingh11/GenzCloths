@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Catagory = () => {
   return (
@@ -51,9 +52,11 @@ const Catagory = () => {
         </div>
         {/* Add a "More" button */}
         <div className="max-w-sm rounded overflow-hidden flex items-center"> {/* Added 'flex' and 'items-center' classes */}
+        <Link to='/showallcategory'>
           <button className="w-full h-full border  text-gray-400 font-bold">
             More
           </button>
+          </Link>
         </div>
       </div>
 

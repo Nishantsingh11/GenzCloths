@@ -79,8 +79,6 @@ const FormForSeller = () => {
 
     const subcategories = findSubcategories(selectedMainCategory);
 
-
-
     const handlesubformdata = (subcategorie) => {
         setSelectedSubCategory(subcategorie)
         setBasicData({ ...basicData, productSubCategory: selectedSubCategory })
@@ -94,7 +92,6 @@ const FormForSeller = () => {
         for (const key in basicData) {
             formData.append(key, basicData[key]);
         }
-    
         try {
             const res = await axios.post("http://localhost:8080/product/createproduct", formData, config);
     
