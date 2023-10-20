@@ -46,9 +46,9 @@ const ProductList = ({ maincategory, subcategory, order }) => {
           {products && products.length > 0 ? (
 
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {products.map((product, index) => (
-
-                <Link to={`/product/${product._id}`} key={index}>
+              {products.map((product, index) => {
+                const colors = product.productColor[0].split(',');
+                return  <Link to={`/product/${product._id}`} key={index}>
                   <div className="group relative" key={product._id}>
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <img
@@ -65,7 +65,17 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                           {product.productName}
 
                         </h3>
-                        <p className="mt-1 text-sm text-gray-500">{product.productColor}</p>
+                        <p className=" pt-4 pb-2 text-gray-700 text-base">
+                                <span className='text-sm'>Color: </span>
+                                <div className="flex items-center">
+                                    {colors.map((color, key) => (
+                                        <div
+                                            key={key}
+                                            style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '50%', marginRight: '5px' }}
+                                        ></div>
+                                    ))}
+                                </div>
+                            </p>
                       </div>
                       <p className="text-sm ">
                         {product.productDiscountPrice} <br /> <span className="text-red-300 line-through">
@@ -74,7 +84,7 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                     </div>
                   </div>
                 </Link>
-              ))}
+              })}
             </div>
           ) : (
             <div className="text-center font-bold text-3xl">Nothing to show here</div>

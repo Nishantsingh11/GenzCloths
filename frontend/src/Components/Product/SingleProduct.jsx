@@ -38,8 +38,12 @@ const SingleProduct = () => {
                 console.log(err);
             })
     }, [id])
-    const Sizes = data?.productSize.split(",")
-    console.log(Sizes);
+
+
+    const colors = data?.productColor[0].split(',');
+    console.log(colors);
+    const Sizes = data?.productSize[0].split(',')
+
 
     const handleQuantity = (e) => {
         setQuantity(e.target.value)
@@ -95,23 +99,23 @@ const SingleProduct = () => {
 
 
 
-    const handleAddToWishList = (id)=>{
-        axios.post("http://localhost:8080/wishlist/createwishlist",{productId:id},config)
-        .then((res)=>{
-            console.log(res.data);
-            toast.success(res.data.msg)
-        })
-        .catch((res)=>{
-            console.log(res);
-            toast.error("something went wrong")
-        })
+    const handleAddToWishList = (id) => {
+        axios.post("http://localhost:8080/wishlist/createwishlist", { productId: id }, config)
+            .then((res) => {
+                console.log(res.data);
+                toast.success(res.data.msg)
+            })
+            .catch((res) => {
+                console.log(res);
+                toast.error("something went wrong")
+            })
     }
     return (
         <>
             {isLoading ? (
                 <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-            </div>
+                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+                </div>
             ) : (
                 <div>
                     <section className="text-gray-700 body-font overflow-hidden bg-white">
@@ -145,10 +149,17 @@ const SingleProduct = () => {
                                     <p className="leading-relaxed">{data.productDescription}</p>
                                     <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                                         <div className="flex">
-                                            <span className="mr-3">Color</span>
-                                            <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-                                            <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
-                                            <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none"></button>
+                                            <p className=" pt-4 pb-2 text-gray-700 text-base">
+                                                <span className='text-sm'>Color: </span>
+                                                <div className="flex items-center">
+                                                    {colors.map((color, key) => (
+                                                        <div
+                                                            key={key}
+                                                            style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '50%', marginRight: '5px' }}
+                                                        ></div>
+                                                    ))}
+                                                </div>
+                                            </p>
                                         </div>
                                         <div className="flex ml-6 items-center">
                                             <span className="mr-3">Size</span>
@@ -196,7 +207,7 @@ const SingleProduct = () => {
                                             <button className="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Buy now</button>
                                         </Link>
 
-                                        <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4" onClick={()=>handleAddToWishList(data._id)}>
+                                        <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4" onClick={() => handleAddToWishList(data._id)}>
                                             <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
                                                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                                             </svg>
@@ -233,15 +244,10 @@ export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb, g
     }, [getCartItemFromdb])
 
 
-    console.log(getCartItemFromdb)
     return (
         <div>
-
-
             {
                 isCartOpen ? (
-
-
                     <div className="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
 
                         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -269,9 +275,9 @@ export const CartDailog = ({ isCartOpen, handlecloseButton, getCartItemFromdb, g
                                                 {
                                                     isCartLoding ? (
                                                         <div className="mt-8">
-                                                           <div className="flex justify-center items-center h-screen">
-                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-                </div>
+                                                            <div className="flex justify-center items-center h-screen">
+                                                                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+                                                            </div>
                                                         </div>
                                                     ) : (
                                                         <div className="mt-8">

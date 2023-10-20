@@ -26,7 +26,7 @@ const ItemsForSeller = () => {
         },
     }), []);
     useEffect(() => {
-        axios.get("http://localhost:8080/product/getproductbyuser",config)
+        axios.get("http://localhost:8080/product/getproductbyuser", config)
             .then((res) => {
                 setItems(res.data)
                 console.log(res.data);
@@ -64,22 +64,22 @@ const ItemsForSeller = () => {
             productMaterials: editItem.productMaterials,
         }
         console.log(id);
-        axios.put(`http://localhost:8080/product/editproduct/${id}`,editItem)
-        .then((res)=>{
-            console.log(res.data);
-            toast.success("update success")
-            setIsModalOpen(false)
-        })
-        .catch((err)=>{
-            console.log(err);
-            toast.dismiss("wrong")
-            setIsModalOpen(true)
+        axios.put(`http://localhost:8080/product/editproduct/${id}`, editItem)
+            .then((res) => {
+                console.log(res.data);
+                toast.success("update success")
+                setIsModalOpen(false)
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.dismiss("wrong")
+                setIsModalOpen(true)
 
-        })
-        console.log("from the handleedit",edited);
-        
+            })
+        console.log("from the handleedit", edited);
 
-        
+
+
     }
     console.log(editItem._id);
     const handleCancel = () => {
@@ -97,7 +97,7 @@ const ItemsForSeller = () => {
             })
 
     }
-console.log(`http://localhost:8080/product/${items?.productImage}`);
+    console.log(`http://localhost:8080/product/${items?.productImage}`);
 
     function shortenDescription(description, maxLength) {
         const words = description.split(' ');
@@ -175,7 +175,7 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                                                 type="text"
                                                                 id="productQuantity"
                                                                 value={editItem.productQuantity}
-                                                                onChange={(e) => setEditItem({ ...editItem, productQuantity:e.target.value })}
+                                                                onChange={(e) => setEditItem({ ...editItem, productQuantity: e.target.value })}
                                                                 className="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500"
                                                             />
                                                         </div>
@@ -185,19 +185,19 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                                     <label htmlFor="small-input" className="block mb-2 text-sm font-medium text-gray-900">Product Size</label>
                                                     <input type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                         value={editItem.productSize}
-                                                        onChange={(e) => setEditItem({ ...editItem,productSize:e.target.value })}
+                                                        onChange={(e) => setEditItem({ ...editItem, productSize: e.target.value })}
                                                     />
 
                                                     <label htmlFor="small-input" className="block mb-2 text-sm font-medium text-gray-900">Product Color</label>
                                                     <input type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                         value={editItem.productColor}
-                                                        onChange={(e) => setEditItem({ ...editItem, productColor:e.target.value })}
+                                                        onChange={(e) => setEditItem({ ...editItem, productColor: e.target.value })}
                                                     />
 
                                                     <label htmlFor="small-input" className="block mb-2 text-sm font-medium text-gray-900">Product Brand</label>
                                                     <input type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                         value={editItem.productBrand}
-                                                        onChange={(e) => setEditItem({ ...editItem, productBrand:e.target.value})}
+                                                        onChange={(e) => setEditItem({ ...editItem, productBrand: e.target.value })}
                                                     />
 
 
@@ -210,7 +210,7 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                                                 id="productPrice"
                                                                 className="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500"
                                                                 value={editItem.productDiscount}
-                                                                onChange={(e) => setEditItem({ ...editItem, productDiscount:e.target.value})}
+                                                                onChange={(e) => setEditItem({ ...editItem, productDiscount: e.target.value })}
                                                             />
                                                         </div>
 
@@ -221,7 +221,7 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                                                 id="productQuantity"
                                                                 className="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500"
                                                                 value={editItem.productDiscountPrice}
-                                                                onChange={(e) => setEditItem({ ...editItem,productDiscountPrice:e.target.value })}
+                                                                onChange={(e) => setEditItem({ ...editItem, productDiscountPrice: e.target.value })}
                                                             />
                                                         </div>
                                                     </div>
@@ -229,13 +229,13 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                                     <input type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
 
                                                         value={editItem.productTags}
-                                                        onChange={(e) => setEditItem({ ...editItem, productTags:e.target.value})}
+                                                        onChange={(e) => setEditItem({ ...editItem, productTags: e.target.value })}
                                                     />
 
                                                     <label htmlFor="small-input" className="block mb-2 text-sm font-medium text-gray-900">Product Materials</label>
                                                     <input type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                         value={editItem.productMaterials}
-                                                        onChange={(e) => setEditItem({ ...editItem,productMaterials:e.target.value })}
+                                                        onChange={(e) => setEditItem({ ...editItem, productMaterials: e.target.value })}
                                                     />
                                                 </div>
                                             </div>
@@ -244,7 +244,7 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                     <button type="button" className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-                                    onClick={()=>handleEdited(editItem._id)}
+                                        onClick={() => handleEdited(editItem._id)}
                                     >Change</button>
                                     <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                         onClick={handleCancel}>Cancel</button>
@@ -258,11 +258,13 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
 
             <div className='grid grid-cols-4 gap-4'>
                 {items.map((item, index) => {
+                    const colors = item.productColor[0].split(',');
                     const shortenedDescription = shortenDescription(item.productDescription, 30);
+
                     const tagsArray = item.productTags.split(',')
 
                     return <div className="max-w-sm rounded overflow-hidden shadow-lg mt-5 " key={index}>
-                        <img className="w-full" src={`http://localhost:8080/product/${item?.productImage}`} alt='some img'/>
+                        <img className="w-full" src={`http://localhost:8080/product/${item?.productImage}`} alt='some img' />
                         <div className="px-6 py-4">
                             <div className="font-bold text-xl mb-2">{item.productName}</div>
                             <p className="text-gray-700 text-base">
@@ -299,9 +301,20 @@ console.log(`http://localhost:8080/product/${items?.productImage}`);
                             <p className="px-6 pt-4 pb-2 text-gray-700 text-base">
                                 <span className="font-bold">Size: </span> {item.productSize}
                             </p>
+
                             <p className="px-6 pt-4 pb-2 text-gray-700 text-base">
-                                <span className="font-bold">Color: </span> {item.productColor}
+                                <span className="font-bold">Color: </span>
+                                <div className="flex items-center">
+                                    {colors.map((color, key) => (
+                                        <div
+                                            key={key}
+                                            style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '50%', marginRight: '5px' }}
+                                        ></div>
+                                    ))}
+                                </div>
                             </p>
+
+
                             <p className="px-6 pt-4 pb-2 text-gray-700 text-base">
                                 <span className="font-bold">Discount: </span> {item.productDiscount}%
                             </p>

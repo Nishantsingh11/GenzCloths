@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { categories } from '../Category/Category';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { SketchPicker } from "react-color"
 
 const FormForSeller = () => {
     const navigate = useNavigate();
@@ -9,6 +10,10 @@ const FormForSeller = () => {
     const [isSubToggle, setIsSubToggle] = useState(false)
     const [selectedMainCategory, setSelectedMainCategory] = useState(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+    const [isColorToggle, setIsColorToggle] = useState(false)
+    const [selectedColor , setSelectedColor] = useState([])
+    const [clothscolors, setClothscolors] = useState("#fff")
+
     const [basicData, setBasicData] = useState({
         productName: '',
         productDescription: '',
@@ -17,7 +22,7 @@ const FormForSeller = () => {
         productPrice: '',
         productQuantity: '',
         productSize: '',
-        productColor: '',
+        productColor: [],
         productBrand: '',
         productMaterials: '',
         productDiscount: '',
@@ -31,6 +36,19 @@ const FormForSeller = () => {
             'Authorization': `${localStorage.getItem("token")}`,
         },
     }), []);
+    const handleColorChange = (color) => {
+        console.log(color.hex);
+        setClothscolors(color.hex)
+    }
+    console.log(clothscolors);
+    const addSelectedColor = () =>{
+        setSelectedColor([...selectedColor,clothscolors])
+        setBasicData({...basicData,
+            productColor:[...basicData.productColor,clothscolors]})
+        setClothscolors('#fff')
+        setIsColorToggle(false)
+    }
+    console.log(selectedColor);
 
 
 
@@ -85,19 +103,19 @@ const FormForSeller = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
-    
+
         // Append all form data to the FormData object
         for (const key in basicData) {
             formData.append(key, basicData[key]);
         }
         try {
             const res = await axios.post("http://localhost:8080/product/createproduct", formData, config);
-    
+
             console.log(res);
             navigate("/seller/youritem");
-    
+
             // Reset form data
             setBasicData({
                 productName: '',
@@ -121,7 +139,7 @@ const FormForSeller = () => {
             console.log(err);
         }
     };
-    
+
     return (
         <>
             <section className=" py-1 bg-blueGray-50">
@@ -313,11 +331,27 @@ const FormForSeller = () => {
                                             <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                 Product Color
                                             </label>
-                                            <input type="email" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder='Red,Blue,Green'
-                                                name="productColor"
-                                                value={basicData.productColor}
-                                                onChange={getBasicData} />
+
+                                            <div className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                onClick={() => setIsColorToggle(!isToggle)}
+                                            >
+                                               { selectedColor.map((item,index)=>{
+                                                    return <span key={index} className="inline-block w-7 h-7 rounded-full bg-blue-500 mr-2 mb-2" style={{backgroundColor:item}}></span>
+                                                })
+                                               }
+                                            </div>
                                         </div>
+                                        {isColorToggle &&
+                                        <>
+                                            <SketchPicker
+                                                color={clothscolors}
+                                                onChangeComplete={handleColorChange}
+                                            />
+                                            <div onClick={addSelectedColor}>Add Color</div>
+                                        </>
+
+                                        }
+
                                     </div>
                                     <div className="w-full lg:w-4/12 px-4 mt-5">
                                         <div className="relative w-full mb-3">
@@ -380,7 +414,7 @@ const FormForSeller = () => {
                     </div>
                     <div className='text-center'>
 
-                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 mx-auto rounded-full" onClick={handleSubmit}>
+                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 mx-auto rounded-full" onClick={handleSubmit} type='submit'>
                             Submit
                         </button>
                     </div>

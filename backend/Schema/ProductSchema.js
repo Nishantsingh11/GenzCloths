@@ -29,11 +29,12 @@ const ProductSchema = new mongoose.Schema({
         required:true
     },
     productSize:{
-        type:String,
+        
+        type:[String],
         required:true
     },
     productColor:{
-        type:String,
+        type:[String],
         required:true
     },
     productBrand:{
