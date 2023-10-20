@@ -277,4 +277,17 @@ Productrouter.put("/editproduct/:id", (req, res) => {
     });
 });
 
+
+// search product
+Productrouter.get("/search/:key", async (req,res)=>{
+  try{
+    const {key} = req.params;
+    const data = await ProductSchema.find({productName:{ $regex:key, $options:'i'}})
+    res.status(200).json(data)
+  }
+  catch(err){
+    res.status(200).json({ msg: "Not able to get product" });
+  }
+})
+
 module.exports = Productrouter;
