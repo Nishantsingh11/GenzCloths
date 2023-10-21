@@ -62,14 +62,14 @@ const Navbar = () => {
             //   className="svg-inline--fa fa-search fa-w-16 fa-9x"
             ><path fill="currentColor" d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"></path></svg>
           </div>
-       <div className='ml-32'>
+       <div className='w-3/5'>
         {
           isSearch && searchProduct.length > 0 && (
-            <div className="absolute z-10 bg-white  rounded-md shadow-md">
+            <div className="absolute z-10 bg-white  rounded-md shadow-md w-3/12 ml-10 mt-2">
               <div className="flex flex-col">
                 {
                   searchProduct.map((product, index) => (
-                    <Link to={`/product/${product._id}`} key={index} className="flex items-center p-2 hover:bg-gray-100"
+                    <Link to={`/product/${product._id}`} key={index} className="flex items-center  hover:bg-gray-100"
                     onClick={()=>setIsSearch(false)}
                     >
                       <img className="w-16 h-16 object-cover rounded-md" src={`http://localhost:8080/product/${product?.productImage}`} alt="" />
@@ -121,16 +121,12 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          <div className="ml-4 hidden sm:flex flex-col font-bold">
-            <span className="text-xs text-gray-400">Your Cart</span>
-            <span>$0</span>
-          </div>
-          <div className="ml-auto md:w-48 hidden sm:flex flex-col place-items-end">
+          <div className="ml-10 md:w-48 hidden sm:flex flex-col place-items-end">
             {isLogin ? (
 
-              <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-gray-700 text-lg font-bold text-white" onClick={handleLogout}>
+              <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-gray-700 hover:bg-gray-600 text-lg font-bold text-white" onClick={handleLogout}>
                 Log out
-                <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+            
               </button>
             ) : (
               <Link to="/registration ">

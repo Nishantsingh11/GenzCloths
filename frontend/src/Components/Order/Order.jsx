@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useNavigate, } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 
 
 const Order = () => {
@@ -21,7 +21,7 @@ const Order = () => {
         const fetchData = async () => {
             try {
                 const res = await axios.get("http://localhost:8080/cart/getcart", config);
-                // console.log(res.data);
+                console.log(res.data);
                 setGetCartItemFromdb(res.data.cartItems);
                 setGetTotal(res.data.total)
                 setIsLoading(false)
@@ -34,6 +34,7 @@ const Order = () => {
 
     }, [config])
 
+    console.log(getCartItemFromdb);
     useEffect(() => {
         axios.get("http://localhost:8080/user/getuserdetails", config)
             .then((res) => {
@@ -93,8 +94,8 @@ const Order = () => {
                                     {getCartItemFromdb.map((item, index) => (
                                         <div className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full " key={index}>
                                             <div className="pb-4 md:pb-8 w-full md:w-40">
-                                                <img className="w-full hidden md:block" src="https://i.ibb.co/84qQR4p/Rectangle-10.png" alt="dress" />
-                                                <img className="w-full md:hidden" src="https://i.ibb.co/L039qbN/Rectangle-10.png" alt="dress" />
+                                               
+                                                <img className="w-full" src={`http://localhost:8080/product/${item.productDetails.productImage}`} alt="dress" />
                                             </div>
                                             <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
                                                 <div className="w-full flex flex-col justify-start items-start space-y-8">
@@ -200,9 +201,11 @@ const Order = () => {
                                             </div>
 
                                         </div>
+                                            <Link to = "/profile">
                                         <div className="flex w-full justify-center items-center md:justify-start md:items-start">
                                             <button className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800">Edit Details</button>
                                         </div>
+                                            </Link>
                                         <div className="flex w-full justify-center items-center md:justify-start md:items-start" onClick={CreateOrder}>
                                             <button className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800"
                                                >Place Order</button>

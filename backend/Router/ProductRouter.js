@@ -9,85 +9,90 @@ Productrouter.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
 const authMiddleware = require("../Middleware/authMiddleware");
 Productrouter.use(cors());
-const multer = require("multer")
+const multer = require("multer");
 const upload = multer({ dest: "uploads/" }); // Destination folder for uploaded files
-Productrouter.use("/uploads",express.static("uploads"))
+Productrouter.use("/uploads", express.static("uploads"));
 
 // Create a Product
-Productrouter.post("/createproduct", authMiddleware,upload.single("productImage"), (req, res) => {
-  console.log(req);
-  // console.log("Request Body:", req.body);
-  // console.log("Uploaded File:", req.file);
-  try {
-    const id = req.user;
-    const {
-      productName,
-      productDescription,
-      productMainCategory,
-      productSubCategory,
-      productPrice,
-      productQuantity,
-      productSize,
-      productColor,
-      productBrand,
-      productRating,
-      productReview,
-      productDiscount,
-      productDiscountPrice,
-      productTags,
-      productMaterials,
-    } = req.body;
-    const productImage = req.file.path;
-    // console.log(req.file);
-    console.log("productImage", productImage);
-    if (
-      !productName ||
-      !productDescription ||
-      !productMainCategory ||
-      !productSubCategory ||
-      !productPrice ||
-      !productQuantity ||
-      !productSize ||
-      !productColor ||
-      !productBrand ||
-      !productMaterials
-    ) {
-      return res.status(400).json({ msg: "Please enter all fields" });
-    }
-    const data = ProductSchema({
-      productName,
-      productDescription,
-      productMainCategory,
-      productSubCategory,
-      productPrice,
-      productQuantity,
-      productSize,
-      productColor,
-      productBrand,
-      productRating,
-      productReview,
-      productDiscount,
-      productDiscountPrice,
-      productTags,
-      productMaterials,
-      productImage,
-      userId: id,
-    });
-
-    data
-      .save()
-      .then((product) => {
-        res.json({ msg: "Product created successfully", product });
-      })
-      .catch((err) => {
-        res.status(400).json({ msg: "something went wrong" });
-        console.log("err", err);
+Productrouter.post(
+  "/createproduct",
+  authMiddleware,
+  upload.single("productImage"),
+  (req, res) => {
+    console.log(req);
+    // console.log("Request Body:", req.body);
+    // console.log("Uploaded File:", req.file);
+    try {
+      const id = req.user;
+      const {
+        productName,
+        productDescription,
+        productMainCategory,
+        productSubCategory,
+        productPrice,
+        productQuantity,
+        productSize,
+        productColor,
+        productBrand,
+        productRating,
+        productReview,
+        productDiscount,
+        productDiscountPrice,
+        productTags,
+        productMaterials,
+      } = req.body;
+      const productImage = req.file.path;
+      // console.log(req.file);
+      console.log("productImage", productImage);
+      if (
+        !productName ||
+        !productDescription ||
+        !productMainCategory ||
+        !productSubCategory ||
+        !productPrice ||
+        !productQuantity ||
+        !productSize ||
+        !productColor ||
+        !productBrand ||
+        !productMaterials
+      ) {
+        return res.status(400).json({ msg: "Please enter all fields" });
+      }
+      const data = ProductSchema({
+        productName,
+        productDescription,
+        productMainCategory,
+        productSubCategory,
+        productPrice,
+        productQuantity,
+        productSize,
+        productColor,
+        productBrand,
+        productRating,
+        productReview,
+        productDiscount,
+        productDiscountPrice,
+        productTags,
+        productMaterials,
+        productImage,
+        userId: id,
       });
-  } catch (err) {
-    res.status(400).json({ msg: "Not able to create product" });
-    console.log("err", err);
+
+      data
+        .save()
+        .then((product) => {
+          res.json({ msg: "Product created successfully", product });
+        })
+        .catch((err) => {
+          res.status(400).json({ msg: "something went wrong" });
+          console.log("err", err);
+        });
+    } catch (err) {
+      res.status(400).json({ msg: "Not able to create product" });
+      console.log("err", err);
+    }
   }
-});
+);
 
 // get all the product list
 Productrouter.get("/getallproduct", (req, res) => {
@@ -128,7 +133,7 @@ Productrouter.get("/getproductbyuser", authMiddleware, (req, res) => {
   try {
     const id = req.user;
     ProductSchema.find({ userId: id })
-      .then((product) => {  
+      .then((product) => {
         if (!product) {
           return res.status(404).json({ msg: "Product not found" });
         }
@@ -277,17 +282,41 @@ Productrouter.put("/editproduct/:id", (req, res) => {
     });
 });
 
-
 // search product
-Productrouter.get("/search/:key", async (req,res)=>{
+Productrouter.get("/search/:key", async (req, res) => {
+  try {
+    const { key } = req.params;
+    // i want to also search in category and subcategory
+
+    const data = await ProductSchema.find({
+      productName: {
+        $regex: key,
+        $options: "i",
+      },
+    });
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(200).json({ msg: "Not able to get product" });
+  }
+});
+
+// finding the related product
+Productrouter.get("/relatedproduct/:subcategory/:productId", async (req,res)=>{
   try{
-    const {key} = req.params;
-    const data = await ProductSchema.find({productName:{ $regex:key, $options:'i'}})
+
+    const {subcategory,productId} = req.params;
+    
+    const data = await ProductSchema.find({
+      productSubCategory:subcategory,
+      _id:{$ne:productId}
+    }).limit(4)
     res.status(200).json(data)
   }
   catch(err){
-    res.status(200).json({ msg: "Not able to get product" });
+    console.log(err)
+    res.status(400).json({msg:"Not able to get product"})
   }
+
 })
 
 module.exports = Productrouter;

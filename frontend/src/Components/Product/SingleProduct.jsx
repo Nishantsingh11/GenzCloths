@@ -11,6 +11,7 @@ const SingleProduct = () => {
     const [quantity, setQuantity] = useState(1)
     const [getTotal, setGetTotal] = useState([])
     const [isCartOpen, setIsCartOpen] = useState(false)
+    const [relatedproduct, setRelatedproduct] = useState([])
     const [cart, setCart] = useState({
         productId: id,
         quantity: quantity
@@ -32,6 +33,14 @@ const SingleProduct = () => {
                 console.log(res.data)
                 setData(res.data)
                 setIsLoading(false)
+                axios.get(`http://localhost:8080/product/relatedproduct/${res.data.productSubCategory}/${res.data._id}`)
+                    .then((data) => {
+                        setRelatedproduct(data.data)
+                        console.log(data.data);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
 
             })
             .catch((err) => {
@@ -52,11 +61,26 @@ const SingleProduct = () => {
             quantity: e.target.value
         })
     }
+    console.log(cart);
+
+    const fetchData = async () => {
+        try {
+            const res = await axios.get("http://localhost:8080/cart/getcart", config);
+            console.log(res.data);
+            setGetCartItemFromdb(res.data.cartItems);
+            setGetTotal(res.data.total)
+            setIsCartLoding(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const handleAddToCart = () => {
         axios.post("http://localhost:8080/cart/addtocart", cart, config)
             .then((res) => {
                 toast.success(res.data.message)
                 setIsCartOpen(true)
+                fetchData()
             })
             .catch((err) => {
                 console.log(err);
@@ -68,27 +92,6 @@ const SingleProduct = () => {
         setIsCartOpen(false)
 
     }
-
-
-
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                const res = await axios.get("http://localhost:8080/cart/getcart", config);
-                console.log(res.data);
-                setGetCartItemFromdb(res.data.cartItems);
-                setGetTotal(res.data.total)
-                setIsCartLoding(false);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchData();
-
-
-    }, [config])
     useEffect(() => {
         if (getCartItemFromdb?.length > 0) {
             setIsCartLoding(false);
@@ -111,13 +114,13 @@ const SingleProduct = () => {
             })
     }
     return (
-        <>
+        <div>
             {isLoading ? (
                 <div className="flex justify-center items-center h-screen">
                     <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
                 </div>
             ) : (
-                <div>
+                <>                <div>
                     <section className="text-gray-700 body-font overflow-hidden bg-white">
                         <div className="container px-5 py-24 mx-auto">
                             <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -225,8 +228,60 @@ const SingleProduct = () => {
                         getTotal={getTotal}
                     />
                 </div>
+
+
+                            <div>
+                                {/* related product */}
+                                <div className="flex justify-center items-center h-20">
+                                    <div className="text-center font-bold text-3xl">Related Product</div>
+                                    </div>
+                            </div>
+
+                    <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                        {relatedproduct.map((product, index) => {
+                            const colors = product.productColor[0].split(',');
+                            return <Link to={`/product/${product._id}`} key={index}>
+                                <div className="group relative" key={product._id}>
+                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                        <img
+                                            src={`http://localhost:8080/product/${product?.productImage}`} // Use the product image URL
+                                            alt={product.productName} // Use the product name as alt text
+                                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                        />
+
+                                    </div>
+                                    <div className="mt-4 flex justify-between">
+                                        <div>
+                                            <h3 className="text-sm text-gray-700">
+                                                <span aria-hidden="true" className="absolute inset-0" />
+                                                {product.productName}
+
+                                            </h3>
+                                            <p className=" pt-4 pb-2 text-gray-700 text-base">
+                                                <span className='text-sm'>Color: </span>
+                                                <div className="flex items-center">
+                                                    {colors.map((color, key) => (
+                                                        <div
+                                                            key={key}
+                                                            style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '50%', marginRight: '5px' }}
+                                                        ></div>
+                                                    ))}
+                                                </div>
+                                            </p>
+                                        </div>
+                                        <p className="text-sm ">
+                                            {product.productDiscountPrice} <br /> <span className="text-red-300 line-through">
+                                                ${product.productPrice}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                        })}
+                    </div>
+                </>
+
             )}
-        </>
+        </div>
     )
 }
 

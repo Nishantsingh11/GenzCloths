@@ -55,7 +55,21 @@ const WishList = () => {
             ) : (
                 <div>
                 { wishListData?.items.length === 0 ? (
+                <>
+                    <div className='text-center text-2xl font-bold items-center'>
+                    
                     <h1>Nothing to show here</h1>
+                    </div>
+                    <div className='text-center mt-10'>
+
+                    <Link to ="/">
+                    <button className='p-4 bg-gray-800 text-white font-bold hover:bg-gray-700 rounded-lg'>
+                        Contine shopping
+                    </button>
+                    </Link>
+                    </div>
+                    </>
+                 
                 ):(
 
 

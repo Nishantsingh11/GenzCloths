@@ -2,7 +2,10 @@ const User = require("../Schema/UserSchema");
 const express = require("express");
 const bodyParser = require("body-parser");
 const authMiddleware = require("../Middleware/authMiddleware");
+const dotenv = require("dotenv");
 const cors = require("cors");
+const { OAuth2Client } = require("google-auth-library");
+dotenv.config();
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -69,7 +72,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
 // Update user profile route (protected)
 router.put("/updateprofile", authMiddleware, async (req, res) => {
   try {
@@ -97,7 +99,7 @@ router.put("/updateprofile", authMiddleware, async (req, res) => {
 
     // Update the user's profile data
     const updatedUser = await User.findOneAndUpdate(
-      // act kind of filter 
+      // act kind of filter
       { _id: id },
       {
         //This is a MongoDB update operator that specifies which fields you want to update and their new values.
@@ -129,7 +131,7 @@ router.put("/updateprofile", authMiddleware, async (req, res) => {
     res.status(500).json({ msg: "Something went wrong" });
   }
 });
-// get all the info using user id 
+// get all the info using user id
 router.get("/getuserdetails", authMiddleware, async (req, res) => {
   try {
     const id = req.user;
@@ -144,7 +146,23 @@ router.get("/getuserdetails", authMiddleware, async (req, res) => {
   }
 });
 
+// Google Login
+router.post("/", async (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Referrer-Policy", "no-referrer-when-downgrade");
 
-
+  const redirectUrl = "http://localhost:3000/oauth";
+  const oAuth2Client = new OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    redirectUrl
+  );
+  const authorizeUrl = oAuth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: "https://www.googleapis.com/auth/userinfo.profile openid email",
+    prompt:'consent'
+  });
+  res.json({ url: authorizeUrl });
+});
 
 module.exports = router;

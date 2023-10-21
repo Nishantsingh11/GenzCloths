@@ -13,7 +13,7 @@ WishListRouter.use(cors());
 WishListRouter.post("/createwishlist", authMiddleware, async (req, res) => {
   try {
     const userId = req.user;
-    const { productId } = req.body;
+    const { productId,quantity } = req.body;
 
     // Find the user's wishlist
     const existingWishlist = await Wishlist.findOne({ user: userId });
@@ -58,6 +58,7 @@ WishListRouter.post("/createwishlist", authMiddleware, async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ msg: "Something went wrong" });
+    console.log(err);
   }
 });
 
