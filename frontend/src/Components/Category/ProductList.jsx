@@ -64,7 +64,7 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                           {product.productName}
 
                         </h3>
-                        <p className=" pt-4 pb-2 text-gray-700 text-base">
+                        <div className=" pt-4 pb-2 text-gray-700 text-base">
                                 <span className='text-sm'>Color: </span>
                                 <div className="flex items-center">
                                     {colors.map((color, key) => (
@@ -74,7 +74,7 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                                         ></div>
                                     ))}
                                 </div>
-                            </p>
+                            </div>
                       </div>
                       <p className="text-sm ">
                         {product.productDiscountPrice} <br /> <span className="text-red-300 line-through">
@@ -82,7 +82,7 @@ const ProductList = ({ maincategory, subcategory, order }) => {
                       </p>
                     </div>
                   </div>
-                </Link>
+                </Link> 
               })}
             </div>
           ) : (

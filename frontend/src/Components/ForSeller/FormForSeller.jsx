@@ -66,12 +66,12 @@ const FormForSeller = () => {
 
     useEffect(() => {
         // Update basicData whenever selectedMainCategory or selectedSubCategory changes
-        setBasicData({
-            ...basicData,
+        setBasicData(prevData=>({
+            ...prevData,
             productMainCategory: selectedMainCategory,
             productSubCategory: selectedSubCategory,
-        });
-    }, []);
+        }));
+    }, [selectedMainCategory, selectedSubCategory]);
 
 
     const handleToggle = () => {

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CategoryDropdown from './Category/Dropdown'
 import axios from 'axios'
+
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = useState(false)
   const [searchProduct, setSearchProduct] = useState('')
   const [isSearch, setIsSearch] = useState(false)
   const token = localStorage.getItem('token')
+  const navigate = useNavigate()
   useEffect(() => {
     if (token) {
       setIsLogin(true)
@@ -17,6 +19,8 @@ const Navbar = () => {
   const handleLogout = () =>{
     localStorage.removeItem('token')
     setIsLogin(false)
+    navigate("/")
+
   } 
   const handleSearch =  (e)=>{
     let key = e.target.value

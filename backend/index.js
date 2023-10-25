@@ -3,12 +3,12 @@
   const app = express();
   const db = require("./Database/connecter")
   const UserRoutes = require("./Router/UserRouter")
-  const jwt = require("jsonwebtoken")
   const Productrouter = require("./Router/ProductRouter")
   const AddToCartRouter = require("./Router/AddToCartRouter")
   const OrderRouter = require("./Router/OrderRouter")
   const cors = require("cors")
   const wishlistRouter = require("./Router/WishlistRouter")
+  const CommentAndReviewRouter = require("./Router/CommentAndReviewRouter")
 
 
   // Middleware setup, if any
@@ -20,6 +20,7 @@
   app.use('/cart', AddToCartRouter)
   app.use("/order",OrderRouter)
   app.use("/wishlist", wishlistRouter)
+  app.use('/comment', CommentAndReviewRouter)
   app.use(express.urlencoded({ extended: true }));
 
   app.use(cors())

@@ -308,6 +308,7 @@ Productrouter.get("/relatedproduct/:subcategory/:productId", async (req,res)=>{
     
     const data = await ProductSchema.find({
       productSubCategory:subcategory,
+      // $ne is not equal to like show the products which is not equal to this product id 
       _id:{$ne:productId}
     }).limit(4)
     res.status(200).json(data)

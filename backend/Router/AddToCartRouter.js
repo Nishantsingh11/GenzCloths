@@ -137,10 +137,11 @@ AddToCartRouter.post("/decreasequantity", authMiddleware, async (req, res) => {
 });
 
 // Remove the item from the cart
-AddToCartRouter.delete("/removeitem", authMiddleware, async (req, res) => {
+AddToCartRouter.delete("/removeitem/:productId", authMiddleware, async (req, res) => {
   try {
     const userID = req.user;
-    const { productId } = req.body;
+    const { productId } = req.params;
+    console.log(productId);
     const SelectedItem = await CartItemSchema.findOne({ user: userID });
     if (!SelectedItem) {
       res.status(400).json({ message: "Cart is empty" });
@@ -150,6 +151,7 @@ AddToCartRouter.delete("/removeitem", authMiddleware, async (req, res) => {
       );
       if (!Item) {
         res.status(400).json({ message: "Item not found" });
+        console.log("Item not found", Item);
       } else {
         SelectedItem.items.remove(Item);
         await SelectedItem.save();
@@ -161,5 +163,4 @@ AddToCartRouter.delete("/removeitem", authMiddleware, async (req, res) => {
     res.status(400).json({ error: "Server Error" });
   }
 });
-
 module.exports = AddToCartRouter;
