@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast';
+import Comments from '../Comments/Comments';
 
 
 const SingleProduct = () => {
@@ -230,12 +231,12 @@ const SingleProduct = () => {
                 </div>
 
 
-                            <div>
-                                {/* related product */}
-                                <div className="flex justify-center items-center h-20">
-                                    <div className="text-center font-bold text-3xl">Related Product</div>
-                                    </div>
-                            </div>
+                    <div>
+                        {/* related product */}
+                        <div className="flex justify-center items-center h-20">
+                            <div className="text-center font-bold text-3xl">Related Product</div>
+                        </div>
+                    </div>
 
                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                         {relatedproduct.map((product, index) => {
@@ -278,6 +279,7 @@ const SingleProduct = () => {
                             </Link>
                         })}
                     </div>
+                    <Comments productId = {id}/>
                 </>
 
             )}
