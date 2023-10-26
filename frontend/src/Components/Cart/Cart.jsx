@@ -26,25 +26,32 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [])
+
+
+    const res =  axios.get("http://localhost:8080/cart/getcart", config);
+    console.log(res.data);
+    setGetCartItemFromdb(res.data.cartItems || []); // Ensure it's set as an array or an empty array
+    setGetTotal(res.data.total || 0); // Ensure it's set as a number or 0
+    setIsLoading(false)
+
+  }, [config])
   console.log(getCartItemFromdb);
   console.log(getTotal);
 
-const handleRemove = async(productId) =>{ 
-  await axios.delete(`http://localhost:8080/cart/removeitem/${productId}`,config,)
-  .then((res)=>{
-    console.log(res.data);
-    toast.success(res.data.message)
-    fetchData();
-  })
-  .catch((err)=>{
-    console.log(err);
-  })
+  const handleRemove = async (productId) => {
+    await axios.delete(`http://localhost:8080/cart/removeitem/${productId}`, config,)
+      .then((res) => {
+        console.log(res.data);
+        toast.success(res.data.message)
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
 
 
 
-}
+  }
 
 
 
@@ -106,7 +113,7 @@ const handleRemove = async(productId) =>{
                               <div className="flex items-center space-x-4">
                                 <p className="text-sm">${item.subtotal}</p>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
-                                onClick={()=>handleRemove(item.productDetails._id)}>
+                                  onClick={() => handleRemove(item.productDetails._id)}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                               </div>

@@ -6,7 +6,7 @@ const NotFound = () => {
             <div class="container min-h-screen px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
                 <div class="wf-ull lg:w-1/2">
                     <p class="text-sm font-medium text-blue-500">404 error</p>
-                    <h1 class="mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">Page not found</h1>
+                    <h1 class="mt-3 text-2xl font-semibold text-gray-800 md:text-3xl">Page not found</h1>
                     <p class="mt-4 text-gray-500">Sorry, the page you are looking for doesn't exist.Here are some helpful links:</p>
 
                     <div class="flex items-center mt-6 gap-x-3">
