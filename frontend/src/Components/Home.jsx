@@ -1,7 +1,7 @@
 import React from 'react'
 import Firstpage from './Firstpage' 
 import Catagory from './Catagory'
-import Footer from './Footer'
+import Footer from './Footer/Footer'
 const Home = () => {
     return (
         <div>

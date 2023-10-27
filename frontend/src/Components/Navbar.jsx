@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CategoryDropdown from './Category/Dropdown'
 import axios from 'axios'
+import logo from "../img/logo1.png"
 
 
 const Navbar = () => {
@@ -43,12 +44,16 @@ const Navbar = () => {
     <>
       {/* // <!-- component --> */}
       <header className="bg-white">
-        <div className="container mx-auto px-4 py-8 flex items-center">
+        <div className="container mx-auto px-2 py-4 flex items-center">
 
           {/* <!-- logo --> */}
-          <div className="mr-auto md:w-48 flex-shrink-0">
+          <div className="mr-auto flex-shrink-0">
             <Link to="/">
-              <img className="h-8 md:h-10" src="https://i.ibb.co/98pHdFq/2021-10-27-15h51-15.png" alt="" />
+              <div className='flex'>
+
+              <img className="h-24 w-24" src={logo} alt="" />
+              <p className='mt-9 font-bold text-xl'style={{ whiteSpace: 'nowrap' }}>Genz Styles</p>
+              </div>
             </Link>
           </div>
 

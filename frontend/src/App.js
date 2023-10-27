@@ -16,6 +16,9 @@ import OrderHistory from "./Components/Order/LastOrder";
 import SingleOrder from "./Components/Order/SingleOrder";
 import ShowAllCategory from "./Components/ShowAllCategory";
 import ShowAllSubCategory from "./Components/ShowAllSubCategory";
+import TermandCondtion from "./Components/Footer/TermandCondtion";
+import Conactus from "./Components/Footer/Conactus";
+import About from "./Components/Footer/About";
 function App() {
   return (
     <div className="container mx-auto">
@@ -43,6 +46,9 @@ function App() {
           path="/showallsubcategory/:category"
           element={<ShowAllSubCategory />}
         />
+        <Route path = "/term" element = {<TermandCondtion/>} />
+        <Route path = "/contact" element = {<Conactus/>} />
+        <Route path = "/about" element = {<About/>} />
       </Routes>
     </div>
   );
